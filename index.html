@@ -1,58 +1,56 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible">
-    <meta name="viewport" content ="width=device-width, initial scale=1.0">
-    <link rel="stylesheet" href="style.css">
-                             
-    <title> Assignment 1</title>
-</head>  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 2</title>
+    <link rel="stylesheet" href="style.css"> <!-- Linking external CSS file -->
+    <script>
+        function showPopup() {
+            alert("Button Clicked! This is a pop-up message.");
+        }
+    </script>
+</head>
 <body>
-    <h1 style="text-align: center;">Assignment 1</h1>
-    <hr>
-    <div>
-        <p>This is some text using &lt;p&gt; and &lt;h1&gt; tags. </p>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">BOOK</a></li>
+            <li><a href="#">CONTACT</a></li>
+        </ul>
     </div>
 
-    <div>
-        <a href="https://www.google.com">This is a link to Google</a>
-        <br>
-        <img src="SnowWhite.png" alt="disney" width= 270 height= 200>
-    </div>
-    <div>
-    
-   <p>Email me <a href="mailto:yordanos.cloud@gmail.com">here</a>. <br>
-        Visit our website <a href="https://www.disney.com/">here</a>.<br>
-         1375 E Buena Vista Dr, <br>
-       Orlando, FL 32830
-        </i></p> 
-    </div>
-    <div>
-        <table bgcolor="yellow" border="1">
-        <tr>
-            <th style="width: 100px"></th>
-            <th style="width: 100px">width</th>
-            <th style="width: 100px">border</th>
-            <th style="width: 100px">bgcolor</th>
-        </tr>
-        <tr bgcolor="lightpink" >
-            <td style="width: 100px"><b>Value1</b></td>
-            <td style="width: 100px">="100"</td>
-            <td style="width: 100px">="2"</td>
-            <td style="width: 100px">="yellow"</td>
-        </tr>
-        <tr bgcolor="lightpink" >
-            <td style="width: 100px"><b>Value2</b></td>
-            <td style="width: 100px"><i> italic</i></td>
-            <td style="width: 100px">="2" or "2px"</td>
-            <td style="width: 100px">="lightpink"</td>
-        </tr>
-        </table>
+    <!-- First Section: Assignment Box (Centered) -->
+    <div class="section-assignment">
+        <div class="iframe-box">
+            <iframe src='index0.html'></iframe>
+        </div>
     </div>
 
-       
+    <!-- Second Section: Image and Text Side by Side -->
+    <div class="section-content">
+        <div class="image-container">
+            <img src="NYC.jpeg" alt="New York City Image">
+        </div>
+
+        <div class="text-container">
+            <div class="text-section">
+                <p class="arial"><b>This is the hotpink paragraph, font family is Arial</b></p>
+                <p class="courier">This is the pink paragraph, font family is Courier</p>
+                <p class="corsiva">This is the lightpink paragraph, font family is Corsiva</p>
+            </div>
+            <div class="button-container">
+                <button class="button" onclick="showPopup()">This is a button</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Study button, input, form and text area elements
+    </div>
 
 </body>
-
 </html>
