@@ -91,7 +91,7 @@ body {
   
   label {
     font-weight: bold;
-    display: none; /* Hide the label as it's not in the screenshot */
+    display: none;
   }
   
   input {
