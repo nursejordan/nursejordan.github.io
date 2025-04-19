@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number</title>
+    <title>Guess My Number</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Guess the Number</h1>
+     <h1>Guess My Number</h1>
+   <p>Guess a number from 1 to 100!</p>
+
+    
+        <button id="reset" class="restart">Reset</button>
+  
     <div>
-        <p>Current score: <span class="score">10</span></p>
+        <p>Current score: <span class="score">10</span>
         <p>High score: <span class="high-score">0</span></p>
+           
     </div>
-    <button id="reset" class="restart">Reset</button>
+ 
     <div id="main-screen">
         <div class="play">
             <form>
                 <label for="guess">Guess a number from 1 to 100</label>
                 <input id="guess" name="guess" type="number" min="1" max="100" step="1" required>
-                <button id="submit-guess" type="submit">Guess!</button>
+                <button id="submit-guess" type="submit">Check!</button>
             </form>
             <p id="guess-message"></p>
         </div>
