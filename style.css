@@ -16,9 +16,9 @@ body {
   margin: 0;
 }
 
-/* Hide original h1 and use new custom title */
+
 h1 {
-  display: none;
+  display: left;
 }
 
 #main-screen {
