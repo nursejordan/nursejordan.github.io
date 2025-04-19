@@ -144,7 +144,7 @@ body {
   
   button.restart {
     background-color: #5cb85c;
-    color: white;
+    color: black;
   }
   
   button.restart:hover {
@@ -155,7 +155,7 @@ body {
   #guess-message {
     font-weight: bold;
     min-height: 24px;
-    color: white;
+    color: black;
     margin-top: 15px;
   }
   
