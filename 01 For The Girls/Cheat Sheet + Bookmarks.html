@@ -1,0 +1,143 @@
+<title>Reef Runner — Print Pack (Cheat Sheet + Bookmarks)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.5; }
+  .screen-note{ max-width:820px; margin:0 auto; padding:22px 20px 4px; }
+  .screen-note h1{ font-family:var(--fd); font-size:1.5rem; margin:0 0 6px; }
+  .screen-note p{ color:var(--ink-soft); font-size:.92rem; margin:.3rem 0; }
+  .screen-note button{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:10px 20px; font-size:.95rem; cursor:pointer; margin-top:8px; }
+
+  /* a "sheet" that mirrors a printed page */
+  .sheet{
+    background:var(--card); width:min(820px,94vw); margin:18px auto; padding:34px 38px;
+    border:1px solid var(--line); border-radius:10px; box-shadow:0 10px 40px rgba(20,40,45,.1);
+  }
+  .sheet h2{ font-family:var(--fd); margin:0; font-size:1.7rem; }
+  .sheet .tagline{ color:var(--ink-soft); margin:2px 0 18px; font-size:.9rem; }
+
+  /* compact 4-area map */
+  .map{ display:grid; gap:6px; grid-template-columns:1fr 1.7fr 1.2fr;
+    grid-template-areas:"bar bar bar" "sc st in" "fi st in"; margin-bottom:20px; }
+  .map .r{ border:2.5px solid; border-radius:9px; padding:9px 8px; font-family:var(--fd); font-weight:700; font-size:.82rem; text-align:center; display:flex; align-items:center; justify-content:center; }
+  .map small{ display:block; font-family:var(--fb); font-weight:400; font-size:.68rem; color:var(--ink-soft); margin-top:2px; }
+  .map .bar{ grid-area:bar; border-color:var(--go); background:var(--go-bg); color:var(--go); }
+  .map .sc{ grid-area:sc; border-color:var(--parts); background:var(--parts-bg); color:var(--parts); }
+  .map .st{ grid-area:st; border-color:var(--stage); background:var(--stage-bg); color:var(--stage); min-height:88px; }
+  .map .in{ grid-area:in; border-color:var(--settings); background:var(--settings-bg); color:var(--settings); }
+  .map .fi{ grid-area:fi; border-color:var(--files); background:var(--files-bg); color:var(--files); }
+
+  .cols{ display:grid; grid-template-columns:1.15fr 1fr; gap:26px; }
+  .block h3{ font-family:var(--fd); font-size:1rem; margin:0 0 8px; text-transform:uppercase; letter-spacing:.5px; color:var(--parts); }
+  ol.steps{ margin:0; padding:0; list-style:none; counter-reset:s; }
+  ol.steps li{ counter-increment:s; position:relative; padding:5px 0 5px 34px; font-size:.85rem; border-bottom:1px dashed var(--line); }
+  ol.steps li::before{ content:counter(s); position:absolute; left:0; top:5px; width:24px; height:24px; background:var(--parts); color:#fff; border-radius:7px; font-family:var(--fd); font-weight:700; font-size:.8rem; display:flex; align-items:center; justify-content:center; }
+  ol.steps li b{ color:var(--ink); }
+  .dotc{ display:inline-block; width:9px; height:9px; border-radius:2px; vertical-align:middle; margin-right:2px; }
+
+  .fixes{ list-style:none; margin:0; padding:0; }
+  .fixes li{ font-size:.82rem; padding:7px 0; border-bottom:1px dashed var(--line); }
+  .fixes li b{ color:var(--settings); }
+  .words{ font-size:.8rem; color:var(--ink-soft); margin-top:4px; }
+  .words b{ color:var(--ink); font-family:var(--fd); }
+
+  /* BOOKMARKS */
+  .bmwrap{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .bm{ width:190px; border:2px dashed var(--line); border-radius:14px; padding:14px 13px; background:var(--card); }
+  .bm .h{ font-family:var(--fd); font-weight:700; font-size:.95rem; text-align:center; margin-bottom:2px; }
+  .bm .sh{ text-align:center; font-size:.62rem; color:var(--ink-soft); margin-bottom:10px; }
+  .bm .k{ display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; margin-bottom:5px; font-size:.74rem; }
+  .bm .k .c{ width:16px; height:16px; border-radius:4px; flex:0 0 auto; }
+  .bm .k b{ font-family:var(--fd); }
+  .bm .foot{ margin-top:9px; border-top:1px solid var(--line); padding-top:8px; font-size:.66rem; color:var(--ink-soft); line-height:1.45; }
+  .bm .foot b{ color:var(--ink); }
+
+  @media print{
+    @page{ size:Letter portrait; margin:12mm; }
+    body{ background:#fff; }
+    .screen-note{ display:none; }
+    .sheet{ box-shadow:none; border:0; border-radius:0; width:auto; margin:0; padding:0; page-break-after:always; }
+    .sheet:last-child{ page-break-after:auto; }
+    .bmwrap{ gap:0; }
+    .bm{ border-color:#bbb; }
+  }
+</style>
+
+<div class="screen-note">
+  <h1>🐠 Reef Runner — Print Pack</h1>
+  <p>Two pages: a <b>one-page cheat sheet</b> and a page of <b>cut-out bookmarks</b> (4 to a page — laptop-tape size). Press print, choose <b>double-sided off</b>, and you're set.</p>
+  <button onclick="window.print()">🖨 Print both pages</button>
+</div>
+
+<!-- PAGE 1: CHEAT SHEET -->
+<div class="sheet">
+  <h2>Godot in one page</h2>
+  <p class="tagline">Make a character walk &amp; jump · Godot 4 · the 4 colours never move</p>
+
+  <div class="map" aria-label="Godot screen map">
+    <div class="r bar">▲ Menus &amp; ▶ GO<small>Play button top-right</small></div>
+    <div class="r sc">Parts list<small>your pieces</small></div>
+    <div class="r st">Stage<small>see your game here</small></div>
+    <div class="r in">Settings<small>the knobs</small></div>
+    <div class="r fi">Files<small>your stuff</small></div>
+  </div>
+
+  <div class="cols">
+    <div class="block">
+      <h3>The 7 steps</h3>
+      <ol class="steps">
+        <li><b>Open Godot</b> — New Project, or Import the camp's <b>project.godot</b>.</li>
+        <li><span class="dotc" style="background:var(--parts)"></span><b>Make the character</b> — add <b>CharacterBody2D</b>, name it Player.</li>
+        <li><span class="dotc" style="background:var(--parts)"></span><b>Picture + bump-shape</b> — add <b>Sprite2D</b> and <b>CollisionShape2D</b>.</li>
+        <li><span class="dotc" style="background:var(--go)"></span><b>Teach the keys</b> — Project ▸ Input Map ▸ <b>move_left, move_right, jump</b>.</li>
+        <li><span class="dotc" style="background:var(--parts)"></span><b>Give her a brain</b> — right-click Player ▸ Attach Script ▸ paste movement code.</li>
+        <li><span class="dotc" style="background:var(--parts)"></span><b>Add the ground</b> — a Level with a <b>StaticBody2D</b> floor; drag Player in.</li>
+        <li><span class="dotc" style="background:var(--go)"></span><b>Press ▶ GO</b> — pick Level. Arrows to walk, Space to jump. 🎉</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>4 words</h3>
+      <p class="words"><b>Node</b> = one piece · <b>Scene</b> = pieces joined · <b>Inspector</b> = the knobs · <b>Script</b> = the brain.</p>
+      <h3 style="margin-top:16px;color:var(--settings)">If it breaks</h3>
+      <ul class="fixes">
+        <li><b>Falls through floor?</b> Both Player &amp; floor need a bump-shape.</li>
+        <li><b>Won't move?</b> Check key spelling: lowercase + underscore.</li>
+        <li><b>Flies away?</b> jump_force must be <b>negative</b> (e.g. −450).</li>
+        <li><b>Red text below?</b> Read line 1 — usually a name typo.</li>
+        <li><b>Play does nothing?</b> Set Level as the main scene.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: BOOKMARKS -->
+<div class="sheet">
+  <h2>Colour-key bookmarks</h2>
+  <p class="tagline">Cut along the dashed lines. Tape one beside each laptop trackpad. 4 per page.</p>
+  <div class="bmwrap" id="bmwrap"></div>
+</div>
+
+<script>
+  // build 4 identical bookmarks
+  var one = `
+    <div class="h">🐠 Godot map</div>
+    <div class="sh">the 4 colours never move</div>
+    <div class="k" style="background:var(--parts-bg)"><span class="c" style="background:var(--parts)"></span><b>Parts</b> — your pieces (top-left)</div>
+    <div class="k" style="background:var(--stage-bg)"><span class="c" style="background:var(--stage)"></span><b>Stage</b> — see your game (middle)</div>
+    <div class="k" style="background:var(--settings-bg)"><span class="c" style="background:var(--settings)"></span><b>Settings</b> — the knobs (right)</div>
+    <div class="k" style="background:var(--files-bg)"><span class="c" style="background:var(--files)"></span><b>Files</b> — your stuff (bottom-left)</div>
+    <div class="k" style="background:var(--go-bg)"><span class="c" style="background:var(--go)"></span><b>GO ▶</b> — play it (top-right)</div>
+    <div class="foot"><b>7 steps:</b> Open ▸ Make Player ▸ Picture+Shape ▸ Keys ▸ Brain ▸ Ground ▸ <b>GO 🎉</b></div>`;
+  document.getElementById('bmwrap').innerHTML =
+    '<div class="bm">'+one+'</div>'.repeat(4);
+</script>

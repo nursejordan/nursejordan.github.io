@@ -1,0 +1,210 @@
+<title>Reef Runner — Facilitator Script (What to Say)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#c9821f; --go-bg:#faeecd;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.45; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:22px 20px 60px; }
+  .head{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:4px; }
+  h1{ font-family:var(--fd); font-size:1.6rem; margin:0; }
+  .sub{ color:var(--ink-soft); font-size:.9rem; margin:0 0 4px; }
+  .legend{ font-size:.78rem; color:var(--ink-soft); display:flex; gap:12px; flex-wrap:wrap; margin:6px 0 16px; }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend i{ width:11px; height:11px; border-radius:3px; display:inline-block; }
+  .btnrow{ margin-bottom:14px; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:8px 16px; font-size:.85rem; cursor:pointer; }
+  .btn.ghost{ background:var(--card); color:var(--ink); border:1px solid var(--line); }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .row{ background:var(--card); border:1px solid var(--line); border-left:5px solid var(--hue,var(--ink-soft)); border-radius:9px; padding:8px 11px; break-inside:avoid; }
+  .row .top{ display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+  .row .sn{ font-family:var(--fd); font-weight:700; font-size:.72rem; color:#fff; background:var(--hue,var(--ink-soft)); border-radius:6px; padding:1px 7px; }
+  .row .kick{ font-family:var(--fd); font-size:.7rem; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft); }
+  .row .say{ font-size:.86rem; }
+  .row .say b{ color:var(--ink); }
+  .row .do{ font-size:.76rem; color:var(--ink-soft); margin-top:4px; }
+  .row .do b{ color:var(--hue,var(--ink)); font-family:var(--fd); }
+
+  .hue-parts{ --hue:var(--parts); }
+  .hue-stage{ --hue:var(--stage); }
+  .hue-settings{ --hue:var(--settings); }
+  .hue-files{ --hue:var(--files); }
+  .hue-go{ --hue:var(--go); }
+  .hue-ink{ --hue:#5b6f78; }
+
+  .note{ margin-top:16px; background:var(--parts-bg); border-radius:10px; padding:12px 15px; font-size:.83rem; }
+  .note b{ font-family:var(--fd); }
+
+  @media print{
+    @page{ size:Letter portrait; margin:11mm; }
+    body{ background:#fff; }
+    .btnrow{ display:none; }
+    .row{ box-shadow:none; }
+    .grid{ gap:6px; }
+  }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <h1>🐠 Reef Runner — What to Say</h1>
+    <span class="sub">Your line for each of the 20 slides. You lead by pointing at colours.</span>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--parts)"></i>Parts</span>
+    <span><i style="background:var(--stage)"></i>Stage</span>
+    <span><i style="background:var(--settings)"></i>Settings</span>
+    <span><i style="background:var(--files)"></i>Files</span>
+    <span><i style="background:var(--go)"></i>GO</span>
+  </div>
+  <div class="btnrow">
+    <button class="btn" onclick="window.print()">🖨 Print</button>
+    <button class="btn ghost" id="themeBtn" type="button">◐ Theme</button>
+  </div>
+
+  <div class="grid">
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">1</span><span class="kick">Title</span></div>
+      <div class="say"><b>"Today we make a real video game.</b> By the end, you'll have a character YOU made that moves when you press the keys."</div>
+      <div class="do"><b>Do →</b> Big energy. Let it land.</div>
+    </div>
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">2</span><span class="kick">Today's win</span></div>
+      <div class="say">"Here's the goal — not the whole game. Just this: <b>she walks, and she jumps.</b> That's a real game moment."</div>
+      <div class="do"><b>Do →</b> Keep the goal small on purpose.</div>
+    </div>
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">3</span><span class="kick">The map</span></div>
+      <div class="say">"Godot looks scary, but it's really just <b>four areas that never move.</b> We give each one a colour."</div>
+      <div class="do"><b>Do →</b> Point at the real Godot screen as you go.</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">4</span><span class="kick">Area 1</span></div>
+      <div class="say">"<b>Green is your Parts list.</b> Every piece of your game lives here, stacked like Lego. Top-left."</div>
+    </div>
+
+    <div class="row hue-stage">
+      <div class="top"><span class="sn">5</span><span class="kick">Area 2</span></div>
+      <div class="say">"<b>Blue is the Stage.</b> The big middle window where you SEE your game."</div>
+    </div>
+
+    <div class="row hue-settings">
+      <div class="top"><span class="sn">6</span><span class="kick">Area 3</span></div>
+      <div class="say">"<b>Coral is Settings.</b> Click any piece and its knobs show up on the right."</div>
+    </div>
+
+    <div class="row hue-files">
+      <div class="top"><span class="sn">7</span><span class="kick">Area 4</span></div>
+      <div class="say">"<b>Purple is your Files.</b> Every picture and sound lives here, bottom-left."</div>
+    </div>
+
+    <div class="row hue-go">
+      <div class="top"><span class="sn">8</span><span class="kick">The button</span></div>
+      <div class="say">"<b>Gold is the GO button</b>, top-right. Press it to play for real."</div>
+      <div class="do"><b>Do →</b> Ask: "What colour is the GO button?" Repeat the 5 colours together.</div>
+    </div>
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">9</span><span class="kick">4 words</span></div>
+      <div class="say">"Four words all week: <b>Node</b> = a piece · <b>Scene</b> = pieces joined · <b>Inspector</b> = knobs · <b>Script</b> = the brain."</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">10</span><span class="kick">7 steps</span></div>
+      <div class="say">"We build in <b>7 tiny steps.</b> One at a time — and we tick each one off."</div>
+    </div>
+
+    <div class="row hue-go">
+      <div class="top"><span class="sn">11</span><span class="kick">Step 1</span></div>
+      <div class="say">"<b>Open Godot.</b> Two ways: a brand-new project, or open the one the camp gave us."</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">12</span><span class="kick">Step 2</span></div>
+      <div class="say">"<b>Make our character:</b> add a CharacterBody2D, name her Player. That's the body she lives in."</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">13</span><span class="kick">Step 3</span></div>
+      <div class="say">"Give her a <b>picture</b> (Sprite2D) and a <b>bump-shape</b> (CollisionShape2D). One to see, one to bump."</div>
+    </div>
+
+    <div class="row hue-go">
+      <div class="top"><span class="sn">14</span><span class="kick">Step 4</span></div>
+      <div class="say">"<b>Teach the keys.</b> Spelling matters: move_left, move_right, jump — lowercase, underscore."</div>
+      <div class="do"><b>Do →</b> Write the 3 names big where everyone can see.</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">15</span><span class="kick">Step 5</span></div>
+      <div class="say">"<b>Give her a brain</b> — a script. In plain words it says: fall, slide, jump, flip, move."</div>
+    </div>
+
+    <div class="row hue-parts">
+      <div class="top"><span class="sn">16</span><span class="kick">Step 6</span></div>
+      <div class="say">"<b>Give her ground</b> — or she falls forever! A Level with a floor to stand on."</div>
+    </div>
+
+    <div class="row hue-go">
+      <div class="top"><span class="sn">17</span><span class="kick">Step 7</span></div>
+      <div class="say">"<b>Press GO!</b> Pick Level. Arrows to walk, Space to jump."</div>
+      <div class="do"><b>Do →</b> Let THEM press it. Stop everything and cheer the first jump. 🎉</div>
+    </div>
+
+    <div class="row hue-settings">
+      <div class="top"><span class="sn">18</span><span class="kick">When it breaks</span></div>
+      <div class="say">"If it breaks — <b>that's normal, that's making games.</b> Three quick fixes: bump-shape, spelling, jump is negative."</div>
+    </div>
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">19</span><span class="kick">You did it</span></div>
+      <div class="say">"Everything else in the game is <b>just this again</b>: add a piece, give it a brain, press GO."</div>
+    </div>
+
+    <div class="row hue-ink">
+      <div class="top"><span class="sn">20</span><span class="kick">Closing</span></div>
+      <div class="say">"<b>You're a game maker now.</b> Go build the reef."</div>
+      <div class="do"><b>Do →</b> Name one thing each girl did well.</div>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <b>If you only remember one thing:</b> you don't teach Godot — you point at the 5 colours and let the girls do the clicking. Go slow on slides 3–8 (the map). That 10 minutes makes the whole rest easy.
+  </div>
+</div>
+
+<script>
+  var root=document.documentElement, tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+</script>

@@ -1,0 +1,735 @@
+<title>Make Your First Godot Game — Reef Runner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --paper:#eef3f0;         /* low-glare seafoam paper */
+    --paper-2:#e4ebe7;
+    --card:#fbfdfc;
+    --ink:#213039;           /* deep-sea slate */
+    --ink-soft:#4f626c;
+    --line:#d4ded9;
+
+    /* the 4-colour MEMORY KEY — one colour per Godot panel, used everywhere */
+    --stage:#2f7fbf;   --stage-bg:#e4eff8;   /* Viewport  */
+    --parts:#0f8a7e;   --parts-bg:#dcf0ec;   /* Scene dock */
+    --files:#7d5 cc4;  --files-bg:# eae4f6;  /* FileSystem */
+    --settings:#e56a53; --settings-bg:#fbe6e0;/* Inspector */
+    --go:#e0972a;      --go-bg:#faeecd;      /* Play button */
+
+    --shadow:0 1px 2px rgba(20,40,45,.06), 0 6px 20px rgba(20,40,45,.06);
+    --radius:16px;
+    --font-display:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --font-body:Verdana,Geneva,system-ui,sans-serif;
+    --font-code:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --maxtext:60ch;
+  }
+  /* fix accidental spaces in hex above via real values */
+  :root{ --files:#7d5cc4; --files-bg:#eae4f6; }
+
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee;
+      --ink-soft:#a7bcbb; --line:#294044;
+      --stage:#5aa6e0; --stage-bg:#173040;
+      --parts:#37bfae; --parts-bg:#123531;
+      --files:#a78be6; --files-bg:#241d3a;
+      --settings:#f18a74; --settings-bg:#3a231e;
+      --go:#f0b451; --go-bg:#3a2e12;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee;
+    --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040;
+    --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a;
+    --settings:#f18a74; --settings-bg:#3a231e;
+    --go:#f0b451; --go-bg:#3a2e12;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#fbfdfc; --ink:#213039;
+    --ink-soft:#4f626c; --line:#d4ded9;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#e0972a; --go-bg:#faeecd;
+  }
+
+  /* ============ BASE ============ */
+  *{box-sizing:border-box;}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--font-body);
+    font-size:var(--fs,18px); line-height:1.7;
+    letter-spacing:.1px;
+  }
+  .wrap{ max-width:940px; margin:0 auto; padding:28px 20px 80px; }
+  p{ max-width:var(--maxtext); }
+  h1,h2,h3,h4{ font-family:var(--font-display); line-height:1.2; text-wrap:balance; letter-spacing:.2px; }
+  a{ color:var(--stage); }
+  strong{ font-weight:700; }
+  code, kbd{ font-family:var(--font-code); font-size:.9em; }
+  kbd{
+    background:var(--paper-2); border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:6px; padding:1px 7px; color:var(--ink); white-space:nowrap;
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; }
+  .brand .dot{ font-size:1.4rem; }
+  .controls{ display:flex; gap:6px; align-items:center; }
+  .btn{
+    font-family:var(--font-display); font-weight:700; font-size:.82rem;
+    background:var(--card); color:var(--ink); border:1px solid var(--line);
+    border-radius:999px; padding:7px 13px; cursor:pointer; line-height:1;
+  }
+  .btn:hover{ border-color:var(--ink-soft); }
+  .btn:focus-visible{ outline:3px solid var(--stage); outline-offset:2px; }
+  .sizegroup{ display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:var(--card); }
+  .sizegroup button{ border:0; background:transparent; cursor:pointer; padding:7px 11px; font-family:var(--font-display); color:var(--ink); }
+  .sizegroup button:hover{ background:var(--paper-2); }
+  .sizegroup button[aria-pressed="true"]{ background:var(--parts); color:#fff; }
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 26px 30px; box-shadow:var(--shadow); margin-bottom:26px;
+  }
+  .eyebrow{
+    font-family:var(--font-display); text-transform:uppercase; letter-spacing:1.5px;
+    font-size:.72rem; font-weight:700; color:var(--parts); margin:0 0 8px;
+  }
+  .hero h1{ margin:0 0 10px; font-size:clamp(1.8rem,4.6vw,2.7rem); }
+  .hero .lede{ font-size:1.05rem; color:var(--ink-soft); margin:0; }
+  .forwho{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;
+  }
+  .pill{
+    font-size:.8rem; background:var(--paper-2); border:1px solid var(--line);
+    border-radius:999px; padding:5px 12px; color:var(--ink-soft);
+  }
+
+  /* ============ SCREEN MAP (the memory key) ============ */
+  section{ margin:38px 0; }
+  .sec-head{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .sec-head h2{ font-size:clamp(1.35rem,3vw,1.8rem); margin:0; }
+  .sec-head .num{
+    font-family:var(--font-display); font-weight:700; color:var(--parts);
+    background:var(--parts-bg); border-radius:10px; padding:2px 10px; font-size:.9rem;
+  }
+  .sec-sub{ color:var(--ink-soft); margin:.3rem 0 18px; }
+
+  .editor{
+    display:grid; gap:8px;
+    grid-template-columns:1.05fr 2fr 1.25fr;
+    grid-template-areas:
+      "toolbar toolbar toolbar"
+      "scene   stage    inspector"
+      "files   stage    inspector"
+      "output  output   output";
+    background:var(--paper-2); border:1px solid var(--line);
+    border-radius:var(--radius); padding:10px;
+  }
+  .reg{ border-radius:12px; padding:12px 13px; border:2px solid; background:var(--card); min-height:74px; }
+  .reg .tag{
+    display:inline-flex; align-items:center; gap:7px; font-family:var(--font-display);
+    font-weight:700; font-size:.9rem; margin-bottom:3px;
+  }
+  .reg .swatch{ width:13px; height:13px; border-radius:4px; display:inline-block; }
+  .reg .what{ font-size:.82rem; color:var(--ink-soft); margin:0; line-height:1.45; }
+  .reg.stage{ grid-area:stage; border-color:var(--stage); background:var(--stage-bg); }
+  .reg.scene{ grid-area:scene; border-color:var(--parts); background:var(--parts-bg); }
+  .reg.files{ grid-area:files; border-color:var(--files); background:var(--files-bg); }
+  .reg.inspector{ grid-area:inspector; border-color:var(--settings); background:var(--settings-bg); }
+  .reg.toolbar{ grid-area:toolbar; border-color:var(--go); background:var(--go-bg); display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; min-height:0; }
+  .reg.output{ grid-area:output; border-color:var(--line); background:var(--card); min-height:0; }
+  .go-badge{ font-family:var(--font-display); font-weight:700; color:#fff; background:var(--go); border-radius:8px; padding:4px 10px; font-size:.82rem; }
+  .stage .playhint{ margin-top:8px; font-size:.78rem; color:var(--stage); font-weight:700; }
+
+  .keyrow{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .keychip{ display:flex; align-items:center; gap:8px; font-size:.82rem; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:6px 12px; }
+  .keychip .swatch{ width:14px; height:14px; border-radius:4px; }
+
+  /* ============ GLOSSARY ============ */
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+  .gloss{ background:var(--card); border:1px solid var(--line); border-left:5px solid var(--word,var(--ink-soft)); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .gloss h4{ margin:0 0 4px; font-size:1.05rem; }
+  .gloss p{ margin:0; font-size:.88rem; color:var(--ink-soft); }
+  .gloss .like{ display:block; margin-top:7px; font-size:.82rem; color:var(--ink); font-style:normal; }
+
+  /* ============ STEPS ============ */
+  .step{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px 20px; margin:14px 0;
+    display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start;
+    transition:opacity .2s ease;
+  }
+  .step .n{
+    font-family:var(--font-display); font-weight:700; color:#fff;
+    background:var(--parts); width:40px; height:40px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; font-size:1.15rem;
+  }
+  .step h3{ margin:2px 0 4px; font-size:1.18rem; }
+  .step .where{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-display);
+    font-weight:700; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px;
+    border-radius:999px; padding:3px 10px; margin-bottom:8px;
+  }
+  .where .swatch{ width:11px; height:11px; border-radius:3px; }
+  .w-stage{ background:var(--stage-bg); color:var(--stage); }
+  .w-parts{ background:var(--parts-bg); color:var(--parts); }
+  .w-files{ background:var(--files-bg); color:var(--files); }
+  .w-settings{ background:var(--settings-bg); color:var(--settings); }
+  .w-go{ background:var(--go-bg); color:var(--go); }
+  .step ol,.step ul{ margin:.4rem 0 0; padding-left:1.2rem; }
+  .step li{ margin:.35rem 0; max-width:var(--maxtext); }
+  .step .win{ margin-top:12px; background:var(--parts-bg); border-radius:10px; padding:10px 13px; font-size:.9rem; color:var(--ink); }
+  .step .win b{ color:var(--parts); }
+  .done-toggle{ display:flex; align-items:center; gap:9px; margin-top:14px; font-size:.85rem; color:var(--ink-soft); cursor:pointer; user-select:none; font-family:var(--font-display); }
+  .done-toggle input{ width:20px; height:20px; accent-color:var(--parts); cursor:pointer; }
+  .step.is-done{ opacity:.5; }
+  .step.is-done h3{ text-decoration:line-through; }
+
+  /* ============ CODE ============ */
+  .code-wrap{ margin-top:12px; border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+  .code-head{ background:var(--paper-2); font-family:var(--font-display); font-weight:700; font-size:.78rem; padding:7px 13px; color:var(--ink-soft); display:flex; justify-content:space-between; gap:8px; }
+  pre{ margin:0; overflow-x:auto; background:var(--card); }
+  pre code{ display:block; padding:14px 16px; font-size:.82rem; line-height:1.65; white-space:pre; color:var(--ink); }
+  .cmt{ color:var(--parts); }
+  .plain-say{ margin-top:10px; font-size:.86rem; color:var(--ink-soft); border-left:3px solid var(--parts); padding-left:12px; }
+  .plain-say b{ color:var(--ink); }
+
+  /* ============ CALLOUTS ============ */
+  .callout{ background:var(--card); border:1px solid var(--line); border-left:6px solid var(--settings); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow); }
+  .callout h3{ margin:0 0 6px; font-size:1.1rem; color:var(--settings); }
+  .fix{ margin:12px 0; }
+  .fix summary{ cursor:pointer; font-family:var(--font-display); font-weight:700; padding:11px 14px; background:var(--card); border:1px solid var(--line); border-radius:10px; list-style:none; display:flex; align-items:center; gap:10px; }
+  .fix summary::-webkit-details-marker{ display:none; }
+  .fix summary .chev{ margin-left:auto; transition:transform .2s; color:var(--ink-soft); }
+  .fix[open] summary .chev{ transform:rotate(90deg); }
+  .fix summary .bad{ color:var(--settings); }
+  .fix .body{ padding:6px 16px 4px; font-size:.9rem; color:var(--ink-soft); }
+  .fix .body b{ color:var(--ink); }
+
+  /* ============ FULL BUILD (collapsible) ============ */
+  .part2 details{ background:var(--card); border:1px solid var(--line); border-radius:14px; margin:12px 0; box-shadow:var(--shadow); overflow:hidden; }
+  .part2 summary{ cursor:pointer; list-style:none; padding:16px 18px; font-family:var(--font-display); display:flex; align-items:center; gap:12px; }
+  .part2 summary::-webkit-details-marker{ display:none; }
+  .part2 summary .chev{ margin-left:auto; color:var(--ink-soft); transition:transform .2s; }
+  .part2 details[open] summary .chev{ transform:rotate(90deg); }
+  .part2 summary .daytag{ font-size:.68rem; text-transform:uppercase; letter-spacing:.6px; background:var(--parts-bg); color:var(--parts); border-radius:999px; padding:3px 9px; font-weight:700; }
+  .part2 summary strong{ font-size:1.05rem; }
+  .part2 .inner{ padding:2px 18px 20px; }
+  .part2 .inner p{ font-size:.92rem; color:var(--ink-soft); }
+  .part2 .vids{ font-size:.82rem; color:var(--ink-soft); margin:6px 0 4px; }
+  .part2 .vids b{ color:var(--ink); font-family:var(--font-display); }
+
+  /* ============ TEACH NOTES ============ */
+  .teach{ background:linear-gradient(180deg,var(--parts-bg),var(--card)); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px; box-shadow:var(--shadow); }
+  .teach h2{ margin:0 0 4px; }
+  .teach ul{ padding-left:1.2rem; }
+  .teach li{ margin:.5rem 0; max-width:var(--maxtext); }
+  .teach .say{ background:var(--card); border-radius:8px; padding:2px 8px; border:1px solid var(--line); }
+
+  .foot{ margin-top:44px; padding-top:18px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:.82rem; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:680px){
+    .editor{ grid-template-columns:1fr; grid-template-areas:"toolbar" "stage" "scene" "files" "inspector" "output"; }
+    .step{ grid-template-columns:1fr; }
+    .step .n{ width:34px; height:34px; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+
+  /* ============ PRINT ============ */
+  @media print{
+    :root{ --paper:#fff; --card:#fff; --ink:#111; --ink-soft:#333; }
+    .controls, .done-toggle, .foot .noprint{ display:none !important; }
+    .wrap{ max-width:none; padding:0; }
+    .hero,.step,.gloss,.callout,.teach,.part2 details,.editor{ box-shadow:none; break-inside:avoid; }
+    .part2 details{ } .part2 details:not([open]) .inner{ display:block; }
+    details{ } details .inner,.fix .body{ display:block !important; }
+    a{ color:#111; text-decoration:underline; }
+    body{ font-size:11pt; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand"><span class="dot">🐠</span> Reef Runner · Godot Starter</div>
+    <div class="controls">
+      <div class="sizegroup" role="group" aria-label="Text size">
+        <button type="button" data-fs="16" aria-pressed="false">A</button>
+        <button type="button" data-fs="18" aria-pressed="true">A</button>
+        <button type="button" data-fs="21" aria-pressed="false" style="font-size:1.05rem">A</button>
+      </div>
+      <button class="btn" id="themeBtn" type="button">◐ Theme</button>
+      <button class="btn" id="printBtn" type="button">🖨 Print</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="eyebrow">Your first Godot game · ages 12 &amp; up</p>
+    <h1>Make a character walk and jump — your first win in Godot</h1>
+    <p class="lede">Godot can feel like a cockpit with a hundred buttons. It isn't, really — it's just <strong>four areas</strong> that never move. Learn those four, and the rest is easy. This guide gets you from "I opened Godot" to "my character jumps!" — one small click at a time.</p>
+    <div class="forwho">
+      <span class="pill">✅ Plain words, no jargon</span>
+      <span class="pill">✅ One action per step</span>
+      <span class="pill">✅ Check-off boxes</span>
+      <span class="pill">✅ Print it as a cheat sheet</span>
+      <span class="pill">✅ Godot 4</span>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <section>
+    <div class="sec-head"><h2>The map: 4 areas that never move</h2></div>
+    <p class="sec-sub">Every colour below stays the same for the <em>whole</em> guide. When a step says <span style="color:var(--parts);font-weight:700">green</span>, it means the green area. You never have to remember names — just follow the colours.</p>
+
+    <div class="editor" aria-label="Map of the Godot screen">
+      <div class="reg toolbar">
+        <span style="font-family:var(--font-display);font-weight:700;font-size:.85rem;color:var(--go)">▲ Top bar — the menus &amp; the GO button</span>
+        <span class="go-badge">▶ GO / Play</span>
+      </div>
+      <div class="reg scene">
+        <span class="tag"><span class="swatch" style="background:var(--parts)"></span>Scene — the PARTS list</span>
+        <p class="what">Every piece of your game (player, ground, coin) shown as a little tree. Top-left.</p>
+      </div>
+      <div class="reg stage">
+        <span class="tag"><span class="swatch" style="background:var(--stage)"></span>Stage — where you SEE your game</span>
+        <p class="what">The big middle window. You drag things here and watch it come to life.</p>
+        <span class="playhint">Press ▶ (top-right) to play it for real.</span>
+      </div>
+      <div class="reg inspector">
+        <span class="tag"><span class="swatch" style="background:var(--settings)"></span>Inspector — the SETTINGS knobs</span>
+        <p class="what">Click any part, and its settings (size, speed, picture) appear here. Right side.</p>
+      </div>
+      <div class="reg files">
+        <span class="tag"><span class="swatch" style="background:var(--files)"></span>Files — your STUFF box</span>
+        <p class="what">All your pictures and sounds live here. Bottom-left.</p>
+      </div>
+      <div class="reg output"><p class="what" style="margin:0">Bottom strip = messages from Godot (errors show here in red). Peek only when something breaks.</p></div>
+    </div>
+
+    <div class="keyrow" aria-hidden="true">
+      <span class="keychip"><span class="swatch" style="background:var(--parts)"></span> Parts list (Scene)</span>
+      <span class="keychip"><span class="swatch" style="background:var(--stage)"></span> Stage (Viewport)</span>
+      <span class="keychip"><span class="swatch" style="background:var(--settings)"></span> Settings (Inspector)</span>
+      <span class="keychip"><span class="swatch" style="background:var(--files)"></span> Files (FileSystem)</span>
+      <span class="keychip"><span class="swatch" style="background:var(--go)"></span> GO (Play)</span>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section>
+    <div class="sec-head"><h2>4 words you'll keep hearing</h2></div>
+    <p class="sec-sub">That's it. Learn these four and you can follow any Godot tutorial.</p>
+    <div class="cards">
+      <div class="gloss" style="--word:var(--parts)">
+        <h4>Node</h4>
+        <p>One single Lego brick. A picture is a node. A sound is a node. A shape is a node.</p>
+        <span class="like">Think: <b>a piece</b>.</span>
+      </div>
+      <div class="gloss" style="--word:var(--stage)">
+        <h4>Scene</h4>
+        <p>A bunch of nodes clicked together into one thing — like your whole Player.</p>
+        <span class="like">Think: <b>a finished build</b> made of pieces.</span>
+      </div>
+      <div class="gloss" style="--word:var(--settings)">
+        <h4>Inspector</h4>
+        <p>The settings panel. Click a node, change its numbers and pictures here.</p>
+        <span class="like">Think: <b>the knobs</b>.</span>
+      </div>
+      <div class="gloss" style="--word:var(--go)">
+        <h4>Script</h4>
+        <p>A page of instructions that tells a node how to act — like "jump when I press space."</p>
+        <span class="like">Think: <b>the brain</b>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 1 -->
+  <section>
+    <div class="sec-head"><span class="num">PART 1</span><h2>Your first win — walk &amp; jump</h2></div>
+    <p class="sec-sub">Do these in order. Tick each box when you finish it. By the end, a character you made will run and jump when you press the keys. That's a real game moment. 🎉</p>
+
+    <!-- STEP 0 -->
+    <article class="step" id="s0">
+      <div class="n">1</div>
+      <div>
+        <span class="where w-go"><span class="swatch" style="background:var(--go)"></span>Top bar</span>
+        <h3>Open Godot — from scratch, or the camp's project</h3>
+        <p style="margin:.2rem 0 .5rem;font-size:.92rem;color:var(--ink-soft)">Open the <strong>Godot</strong> app first. A list of projects appears. Pick your path:</p>
+        <ol>
+          <li><b>Starting from scratch:</b> click <strong>+ New Project</strong> (top-right), name it <strong>Reef Runner</strong>, pick a folder, click <strong>Create &amp; Edit</strong>.</li>
+          <li><b>The camp gave you a project folder:</b> click <strong>Import</strong>, find that folder, open the <strong>project.godot</strong> file inside it, then <strong>Import &amp; Edit</strong>.</li>
+          <li>Either way, the big editor opens. Find your four colours from the map. You're home.</li>
+        </ol>
+        <div class="win"><b>You'll know it worked:</b> you see the editor with its 4 areas — an empty dark <span style="color:var(--stage);font-weight:700">Stage</span> in the middle (from scratch), or the camp's game already loaded.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 1 -->
+    <article class="step" id="s1">
+      <div class="n">2</div>
+      <div>
+        <span class="where w-parts"><span class="swatch" style="background:var(--parts)"></span>Parts list</span>
+        <h3>Make the character (a new Scene)</h3>
+        <ol>
+          <li>In the <span style="color:var(--parts);font-weight:700">Parts list</span> (top-left), click <strong>+ Other Node</strong> (or the big “Other Node” button).</li>
+          <li>In the search box, type <strong>CharacterBody2D</strong>. Click it, then <strong>Create</strong>.</li>
+          <li>It appears in the Parts list. <strong>Double-click its name</strong> and rename it <strong>Player</strong>.</li>
+        </ol>
+        <p class="plain-say"><b>Why this one?</b> <code>CharacterBody2D</code> is Godot's special node for "a thing the player controls that bumps into walls and floors." It's the body your hero lives in.</p>
+        <div class="win"><b>You'll know it worked:</b> <span style="color:var(--parts);font-weight:700">Player</span> is now at the top of the Parts list.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 2 -->
+    <article class="step" id="s2">
+      <div class="n">3</div>
+      <div>
+        <span class="where w-parts"><span class="swatch" style="background:var(--parts)"></span>Parts list</span>
+        <h3>Give her a picture and a body shape</h3>
+        <p style="margin:.2rem 0 .4rem;font-size:.92rem;color:var(--ink-soft)">A CharacterBody2D is invisible on its own. It needs two child pieces: something to <em>see</em>, and something to <em>bump</em> with.</p>
+        <ol>
+          <li><b>Right-click</b> <span style="color:var(--parts);font-weight:700">Player</span> → <strong>Add Child Node</strong> → search <strong>Sprite2D</strong> → Create. <span style="color:var(--ink-soft)">(This is her picture.)</span></li>
+          <li>Click the new <strong>Sprite2D</strong>. In the <span style="color:var(--settings);font-weight:700">Inspector</span> (right), find <strong>Texture</strong> → <strong>Load</strong> → pick any character image from your <span style="color:var(--files);font-weight:700">Files</span>. <span style="color:var(--ink-soft)">(No image yet? Godot's built-in <em>icon.svg</em> works fine for now.)</span></li>
+          <li><b>Right-click</b> <span style="color:var(--parts);font-weight:700">Player</span> again → <strong>Add Child Node</strong> → search <strong>CollisionShape2D</strong> → Create. <span style="color:var(--ink-soft)">(This is her bump-shape.)</span></li>
+          <li>Click <strong>CollisionShape2D</strong>. In the <span style="color:var(--settings);font-weight:700">Inspector</span>, click <strong>Shape</strong> → <strong>New RectangleShape2D</strong>. Drag its handles in the <span style="color:var(--stage);font-weight:700">Stage</span> until the box roughly covers her.</li>
+        </ol>
+        <div class="win"><b>You'll know it worked:</b> Player now has two pieces under it in the Parts list, and you see her picture in the Stage.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 3 -->
+    <article class="step" id="s3">
+      <div class="n">4</div>
+      <div>
+        <span class="where w-go"><span class="swatch" style="background:var(--go)"></span>Top bar</span>
+        <h3>Teach Godot the keys (Input Map)</h3>
+        <p style="margin:.2rem 0 .4rem;font-size:.92rem;color:var(--ink-soft)">The brain we add next will say things like "when <em>move_right</em> is pressed…". First we tell Godot what those names mean. Do this once.</p>
+        <ol>
+          <li>Top bar: <strong>Project</strong> → <strong>Project Settings</strong> → tab <strong>Input Map</strong>.</li>
+          <li>In "Add New Action", type <strong>move_left</strong> → <strong>Add</strong>. Do the same for <strong>move_right</strong> and <strong>jump</strong>.</li>
+          <li>Next to <strong>move_left</strong>, click the <strong>+</strong>, press the <kbd>←</kbd> Left Arrow key, confirm. For <strong>move_right</strong> use <kbd>→</kbd>. For <strong>jump</strong> press <kbd>Space</kbd>.</li>
+          <li>Click <strong>Close</strong>.</li>
+        </ol>
+        <p class="plain-say"><b>Spelling matters here.</b> The names must be exactly <code>move_left</code>, <code>move_right</code>, <code>jump</code> — all lowercase, with the underscore. The code won't find them otherwise.</p>
+        <div class="win"><b>You'll know it worked:</b> three actions are listed with a key icon next to each.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 4 -->
+    <article class="step" id="s4">
+      <div class="n">5</div>
+      <div>
+        <span class="where w-parts"><span class="swatch" style="background:var(--parts)"></span>Parts list → Script</span>
+        <h3>Give her a brain (the movement script)</h3>
+        <ol>
+          <li><b>Right-click</b> <span style="color:var(--parts);font-weight:700">Player</span> → <strong>Attach Script</strong> → <strong>Create</strong>. A code page opens.</li>
+          <li>Delete what's there and type (or paste) the code below.</li>
+          <li>Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd> to save.</li>
+        </ol>
+        <div class="code-wrap">
+          <div class="code-head"><span>Player.gd — the movement brain</span><span>GDScript</span></div>
+<pre><code>extends CharacterBody2D
+
+@export var speed: float = 250.0
+@export var jump_force: float = -450.0
+@export var gravity: float = 1200.0
+
+@onready var visual = get_node_or_null("Sprite2D")
+
+func _physics_process(delta):
+<span class="cmt">    # Gravity pulls her back down.</span>
+    if not is_on_floor():
+        velocity.y += gravity * delta
+
+<span class="cmt">    # Move left and right.</span>
+    var direction = Input.get_axis("move_left", "move_right")
+    if direction != 0:
+        velocity.x = direction * speed
+    else:
+        velocity.x = move_toward(velocity.x, 0, speed)
+
+<span class="cmt">    # Jump — only when standing on the ground.</span>
+    if Input.is_action_just_pressed("jump") and is_on_floor():
+        velocity.y = jump_force
+
+<span class="cmt">    # Face the way she's walking.</span>
+    if direction != 0 and visual:
+        visual.flip_h = direction &lt; 0
+
+    move_and_slide()
+</code></pre>
+        </div>
+        <p class="plain-say"><b>In plain words:</b> every tick, <b>fall</b> if not on the floor · <b>slide</b> left/right with the arrow keys · <b>jump</b> if Space is pressed and she's on the ground · <b>flip</b> the picture to face her direction · then <b>do the move</b> (<code>move_and_slide</code>).</p>
+        <div class="win"><b>You'll know it worked:</b> a little scroll icon appears next to Player in the Parts list, and there are no red errors at the bottom.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 5 -->
+    <article class="step" id="s5">
+      <div class="n">6</div>
+      <div>
+        <span class="where w-parts"><span class="swatch" style="background:var(--parts)"></span>Parts list</span>
+        <h3>Give her ground to stand on</h3>
+        <p style="margin:.2rem 0 .4rem;font-size:.92rem;color:var(--ink-soft)">Right now she'd fall forever. Let's add a floor. We'll build it as its own little scene root so the Player has a world to live in.</p>
+        <ol>
+          <li>Click the <strong>+</strong> tab at the top of the <span style="color:var(--stage);font-weight:700">Stage</span> to make a <strong>new scene</strong>. Add a <strong>Node2D</strong>, rename it <strong>Level</strong>.</li>
+          <li><b>Right-click</b> Level → <strong>Add Child Node</strong> → <strong>StaticBody2D</strong>. Add a <strong>CollisionShape2D</strong> under it with a wide, flat <strong>RectangleShape2D</strong> — that's the floor.</li>
+          <li>Add a <strong>Sprite2D</strong> (or ColorRect) so you can see the floor too.</li>
+          <li>Drag your <strong>Player.tscn</strong> from the <span style="color:var(--files);font-weight:700">Files</span> panel into the <span style="color:var(--parts);font-weight:700">Level</span> parts list. Move her up above the floor in the Stage.</li>
+        </ol>
+        <div class="win"><b>You'll know it worked:</b> in the Level scene you see the floor and the Player sitting above it.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+
+    <!-- STEP 6 -->
+    <article class="step" id="s6">
+      <div class="n">7</div>
+      <div>
+        <span class="where w-go"><span class="swatch" style="background:var(--go)"></span>Top bar · GO</span>
+        <h3>Press GO and play! 🎉</h3>
+        <ol>
+          <li>Press the big <strong>▶ Play</strong> button (top-right) or <kbd>F5</kbd>.</li>
+          <li>Godot asks for a <strong>main scene</strong> the first time — pick <strong>Level</strong>.</li>
+          <li>Press the <kbd>←</kbd> <kbd>→</kbd> arrows to walk. Press <kbd>Space</kbd> to jump.</li>
+        </ol>
+        <div class="win"><b>🎉 YOU DID IT.</b> You made a character move in a game you built. Everything else — coins, enemies, score — is just more of this same loop: add a piece, give it a brain, press GO.</div>
+        <label class="done-toggle"><input type="checkbox"> Mark this step done</label>
+      </div>
+    </article>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section>
+    <div class="sec-head"><h2>Help! It's not working</h2></div>
+    <p class="sec-sub">This is the normal part of making games — not a sign you did it wrong. Find your problem, open it, fix it.</p>
+    <div class="callout" style="border-left-color:var(--settings)">
+      <details class="fix">
+        <summary><span class="bad">😵 She falls straight through the floor</span><span class="chev">▶</span></summary>
+        <div class="body">The floor needs a <b>CollisionShape2D</b> with an actual shape, and the Player needs one too. If either shape is missing (or empty), they can't bump. Check both have a <b>RectangleShape2D</b> assigned in the <b>Inspector</b>.</div>
+      </details>
+      <details class="fix">
+        <summary><span class="bad">🕹 She won't move at all</span><span class="chev">▶</span></summary>
+        <div class="body">Your key names must match the code <b>exactly</b>: <code>move_left</code>, <code>move_right</code>, <code>jump</code> (lowercase, underscore). Re-open <b>Project → Project Settings → Input Map</b> and check the spelling. A capital letter or a space breaks it.</div>
+      </details>
+      <details class="fix">
+        <summary><span class="bad">🚀 She flies up and never comes down</span><span class="chev">▶</span></summary>
+        <div class="body"><code>jump_force</code> should be a <b>negative</b> number (like <code>-450</code>) — in Godot, up is negative. And <code>gravity</code> should be <b>positive</b>. Check them in the <b>Inspector</b> under the Player (they show up because we wrote <code>@export</code>).</div>
+      </details>
+      <details class="fix">
+        <summary><span class="bad">🟥 Red text at the bottom of the screen</span><span class="chev">▶</span></summary>
+        <div class="body">That's the <b>Output/Errors</b> strip talking. Read the first red line — it usually names the node it can't find. 90% of the time it's a spelling difference between the script and a node name (e.g. the script says <code>Sprite2D</code> but you named it something else).</div>
+      </details>
+      <details class="fix">
+        <summary><span class="bad">⬛ Nothing happens when I press Play</span><span class="chev">▶</span></summary>
+        <div class="body">Make sure you picked <b>Level</b> as the main scene. To change it later: <b>Project → Project Settings → Application → Run → Main Scene</b>.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PART 2 FULL BUILD -->
+  <section class="part2">
+    <div class="sec-head"><span class="num">PART 2</span><h2>The full game — build it piece by piece</h2></div>
+    <p class="sec-sub">Once the first win clicks, the rest of the camp game (the "save the reefs" platformer) is the same moves repeated. Each box below matches the <strong>video tutorials in the handout</strong>, in order. Open one at a time — never all at once.</p>
+
+    <details>
+      <summary><span class="daytag">Day 1</span><strong>Set up &amp; make the player</strong><span class="chev">▶</span></summary>
+      <div class="inner">
+        <p>This is exactly Part 1 above, plus bringing in the camp's art.</p>
+        <p class="vids"><b>Handout videos:</b> Creating a Moodboard in Canva · How to Create 2D Tilesets · Opening Godot &amp; Creating a Project · Import Game Assets into Godot · Creating a Player in Godot · Add Player Scene and Playtest.</p>
+        <p>Same 4-area map, same steps 1–7. When you "Import Assets," you're just dropping picture files into the <span style="color:var(--files);font-weight:700">Files</span> panel so your Sprite2D can use them.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="daytag">Day 2</span><strong>Platforms, background &amp; nicer movement</strong><span class="chev">▶</span></summary>
+      <div class="inner">
+        <p class="vids"><b>Handout videos:</b> Add a Script, Camera &amp; Boundary · Changing Player Speed with Constants · Tilemaps &amp; Platforms · Painting a Background with Tilesets · Adding Platform Scenes &amp; Collisions · Animating Moving Platforms with Keyframes · Key-binding Player Movement &amp; Jump Animations · Fix Player Animations with Code.</p>
+        <p><b>Camera:</b> add a <code>Camera2D</code> as a child of the Player so the view follows her.
+        <b>Tilemap:</b> a <code>TileMapLayer</code> lets you "paint" ground and platforms like a colouring book.
+        <b>Constants like</b> <code>@export var speed = 250</code> are just the tweakable numbers from Part 1 — change one, feel the difference.</p>
+        <p>To animate the walking picture, swap <code>Sprite2D</code> for an <code>AnimatedSprite2D</code>. The handout's fuller script also checks a fallback picture:</p>
+        <div class="code-wrap">
+          <div class="code-head"><span>Extra bit — flip an animated OR plain sprite</span><span>GDScript</span></div>
+<pre><code>@onready var visual = get_node_or_null("AnimatedSprite2D")
+@onready var fallback_visual = get_node_or_null("Sprite2D")
+
+<span class="cmt"># ...inside _physics_process, when moving:</span>
+if direction != 0:
+    if visual:
+        visual.flip_h = direction &lt; 0
+    elif fallback_visual:
+        fallback_visual.flip_h = direction &lt; 0</code></pre>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="daytag">Day 3</span><strong>Coins, enemies, score &amp; game-over</strong><span class="chev">▶</span></summary>
+      <div class="inner">
+        <p class="vids"><b>Handout videos:</b> Add Restart Zones with Timers · Adding &amp; Coding Coins · Adding Enemies &amp; Raycasting · Make Enemy Deaths Look Better · Add Text Instructions through Labels · Add Sound Effects · Game Manager, Scoring &amp; End Game.</p>
+
+        <p><b>A patrolling enemy</b> is an <code>Area2D</code> that slides back and forth. When the Player touches it, the Game Manager takes a life:</p>
+        <div class="code-wrap">
+          <div class="code-head"><span>Enemy.gd — moves left/right, hurts on touch</span><span>GDScript</span></div>
+<pre><code>extends Area2D
+
+@export var speed = 100
+@export var move_distance = 200
+
+var start_position
+var direction = 1
+
+func _ready():
+    start_position = position
+
+func _process(delta):
+    position.x += speed * direction * delta
+    if abs(position.x - start_position.x) &gt; move_distance:
+        direction *= -1   <span class="cmt"># turn around at the edge</span>
+
+func _on_body_entered(body):
+    if body.name == "Player":
+        get_node("/root/Level/GameManager").lose_life()</code></pre>
+        </div>
+
+        <p style="margin-top:14px"><b>The Game Manager</b> is the scorekeeper node. It holds the lives and reef count, and shows the HUD text:</p>
+        <div class="code-wrap">
+          <div class="code-head"><span>GameManager.gd — lives, score, game over</span><span>GDScript</span></div>
+<pre><code>extends Node
+
+var lives = 4
+var reefs_saved = 0
+var game_over = false
+
+@onready var lives_label = $"../HUD/LivesLabel"
+@onready var reef_label = $"../HUD/ReefLabel"
+@onready var game_over_label = $"../HUD/GameOverLabel"
+
+func _ready():
+    update_hud()
+    game_over_label.visible = false
+
+func save_reef():
+    if game_over: return
+    reefs_saved += 1
+    update_hud()
+
+func lose_life():
+    if game_over: return
+    lives -= 1
+    update_hud()
+    if lives &lt;= 0:
+        show_game_over()
+
+func update_hud():
+    lives_label.text = "Lives: " + str(lives)
+    reef_label.text = "Reefs Saved: " + str(reefs_saved)
+
+func show_game_over():
+    game_over = true
+    game_over_label.text = "Game Over\nYou saved " + str(reefs_saved) + " reefs!"
+    game_over_label.visible = true</code></pre>
+        </div>
+        <p class="vids" style="margin-top:12px">The <b>HUD</b> (the Lives/Reefs text on screen) is a <code>CanvasLayer</code> with <code>Label</code> nodes — it sits on top of the game and never scrolls away. Coins and reefs are <code>Area2D</code> pieces too: when the Player enters them, they call <code>save_reef()</code> and delete themselves.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="daytag">Day 4 · 5</span><strong>Playtest, present &amp; the comic</strong><span class="chev">▶</span></summary>
+      <div class="inner">
+        <p class="vids"><b>Handout:</b> Playtest Feedback Form · Presentation Slide Deck · Superhero Comic (Hero's Journey in Canva).</p>
+        <p>No new Godot skills — this is where the girls <b>play each other's games</b>, give feedback, and present. The comic/Hero's-Journey work happens in Canva alongside the game. A great confidence finish: they demo a thing they <em>built</em>.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- TEACH NOTES -->
+  <section>
+    <div class="teach">
+      <div class="sec-head" style="margin-bottom:2px"><h2>Notes for you, the guide</h2></div>
+      <p class="sec-sub" style="margin-top:4px">You don't have to remember Godot — you have to remember the <strong>4 colours</strong> and point at them. That's the whole job.</p>
+      <ul>
+        <li><strong>Teach the map first, code last.</strong> Spend the first 5 minutes just naming the 4 areas out loud together. Everything after lands easier.</li>
+        <li><strong>One step on screen at a time.</strong> Do a step, let them do it, tick the box, then move on. The check-off boxes keep restless attention anchored.</li>
+        <li><strong>Say the "why" in one line.</strong> <span class="say">"The CollisionShape is her bump-shape."</span> Kids remember the picture, not the term.</li>
+        <li><strong>Expect the fall-through-floor bug.</strong> It happens to everyone. Treat it as the fun puzzle, not a failure — use the "Help!" cards.</li>
+        <li><strong>Celebrate the jump.</strong> The moment a character jumps is the hook. Stop and cheer it before adding anything else.</li>
+        <li><strong>Pace it:</strong> Map + glossary ≈ 10 min · Steps 1–7 ≈ 35–45 min · that's one satisfying session. Save Part 2 for later days.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p>Built from the BGC Summer Camp 2026 handout (Godot 4 track, "save the reefs" platformer). The full code lives on pages 33–38 of the student handout. <span class="noprint">· Tip: use <strong>🖨 Print</strong> for a paper cheat sheet, and the <strong>A / A</strong> buttons to size the text.</span></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+
+  // ---- theme toggle ----
+  var tBtn = document.getElementById('themeBtn');
+  function currentTheme(){
+    return root.getAttribute('data-theme') ||
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark':'light');
+  }
+  try{ var savedT = localStorage.getItem('rr-theme'); if(savedT) root.setAttribute('data-theme', savedT); }catch(e){}
+  tBtn.addEventListener('click', function(){
+    var next = currentTheme()==='dark' ? 'light':'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('rr-theme', next); }catch(e){}
+  });
+
+  // ---- text size ----
+  var sizeBtns = document.querySelectorAll('.sizegroup button');
+  function applyFs(px){
+    root.style.setProperty('--fs', px + 'px');
+    sizeBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.fs===String(px) ? 'true':'false'); });
+  }
+  try{ var savedFs = localStorage.getItem('rr-fs'); if(savedFs) applyFs(savedFs); }catch(e){}
+  sizeBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      applyFs(b.dataset.fs);
+      try{ localStorage.setItem('rr-fs', b.dataset.fs); }catch(e){}
+    });
+  });
+
+  // ---- print ----
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  // ---- step check-off (persists) ----
+  document.querySelectorAll('.step').forEach(function(step){
+    var box = step.querySelector('.done-toggle input');
+    if(!box) return;
+    var key = 'rr-done-' + step.id;
+    try{ if(localStorage.getItem(key)==='1'){ box.checked = true; step.classList.add('is-done'); } }catch(e){}
+    box.addEventListener('change', function(){
+      step.classList.toggle('is-done', box.checked);
+      try{ localStorage.setItem(key, box.checked ? '1':'0'); }catch(e){}
+    });
+  });
+})();
+</script>

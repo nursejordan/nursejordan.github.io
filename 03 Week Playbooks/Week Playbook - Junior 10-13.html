@@ -1,0 +1,343 @@
+<title>Week Playbook — Junior Designers (Ages 10–13)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#c9821f; --go-bg:#faeecd;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.6; font-size:15.5px; }
+  .wrap{ max-width:900px; margin:0 auto; padding:26px 20px 70px; }
+  h1{ font-family:var(--fd); font-size:clamp(1.5rem,4vw,2.15rem); margin:0 0 6px; line-height:1.2; }
+  .sub{ color:var(--ink-soft); font-size:.93rem; margin:0; max-width:66ch; }
+  a{ color:var(--stage); }
+  .btnrow{ margin:14px 0 18px; display:flex; gap:8px; flex-wrap:wrap; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:9px 17px; font-size:.85rem; cursor:pointer; }
+  .btn.ghost{ background:var(--card); color:var(--ink); border:1px solid var(--line); }
+
+  h2.sec{ font-family:var(--fd); font-size:1.3rem; margin:28px 0 10px; }
+  .panel{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:10px 0; }
+  .panel h3{ font-family:var(--fd); font-size:1.02rem; margin:0 0 6px; }
+  .panel p{ margin:.3rem 0; font-size:.9rem; max-width:66ch; }
+  .panel ul,.panel ol{ margin:.3rem 0 0; padding-left:1.25rem; }
+  .panel li{ margin:.3rem 0; font-size:.9rem; max-width:64ch; }
+
+  .paths{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:11px; }
+  .path{ background:var(--card); border:1px solid var(--line); border-top:5px solid var(--hue); border-radius:12px; padding:12px 15px; }
+  .path h3{ font-family:var(--fd); font-size:.95rem; margin:0 0 3px; color:var(--hue); }
+  .path p{ margin:0; font-size:.83rem; color:var(--ink-soft); }
+
+  table{ border-collapse:collapse; width:100%; font-size:.85rem; }
+  th,td{ text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-family:var(--fd); font-size:.74rem; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-soft); }
+  td b{ font-family:var(--fd); }
+  .tablewrap{ overflow-x:auto; }
+
+  .code-callout{ background:var(--go-bg); border-radius:11px; padding:11px 15px; margin:10px 0; font-size:.9rem; }
+  .code-callout b{ font-family:var(--fd); color:var(--go); }
+  .code-callout code{ font-family:var(--fd); font-weight:700; background:var(--card); border-radius:7px; padding:2px 9px; letter-spacing:1px; }
+
+  .sched{ display:grid; gap:6px; }
+  .slot{ display:grid; grid-template-columns:150px 1fr; gap:10px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:7px 13px; font-size:.86rem; }
+  .slot b{ font-family:var(--fd); color:var(--parts); font-variant-numeric:tabular-nums; white-space:nowrap; font-size:.8rem; }
+  @media (max-width:560px){ .slot{ grid-template-columns:1fr; gap:2px; } }
+
+  details.day{ background:var(--card); border:1px solid var(--line); border-left:6px solid var(--hue); border-radius:14px; margin:12px 0; overflow:hidden; }
+  details.day summary{ cursor:pointer; list-style:none; display:flex; align-items:center; gap:12px; padding:15px 18px; }
+  details.day summary::-webkit-details-marker{ display:none; }
+  .dbadge{ font-family:var(--fd); font-weight:700; color:#fff; background:var(--hue); border-radius:10px; padding:6px 12px; font-size:.85rem; flex:0 0 auto; }
+  details.day summary strong{ font-family:var(--fd); font-size:1.05rem; line-height:1.25; }
+  details.day summary .chev{ margin-left:auto; color:var(--ink-soft); transition:transform .2s; font-size:.8rem; }
+  details.day[open] summary .chev{ transform:rotate(90deg); }
+  .dbody{ padding:0 20px 18px; }
+
+  .qod{ background:var(--paper); border-radius:11px; padding:11px 15px; margin:8px 0 12px; font-size:.88rem; font-style:italic; color:var(--ink-soft); }
+  .qod b{ font-family:var(--fd); font-style:normal; color:var(--hue); display:block; margin-bottom:3px; }
+  .block{ margin:13px 0; }
+  .block h4{ font-family:var(--fd); font-size:.95rem; margin:0 0 4px; display:flex; align-items:center; gap:8px; }
+  .block h4 .tag{ font-size:.64rem; text-transform:uppercase; letter-spacing:.5px; border-radius:999px; padding:2px 9px; font-weight:700; flex:0 0 auto; }
+  .t-lead{ background:var(--files-bg); color:var(--files); }
+  .t-code{ background:var(--parts-bg); color:var(--parts); }
+  .t-game{ background:var(--stage-bg); color:var(--stage); }
+  .t-comic{ background:var(--settings-bg); color:var(--settings); }
+  .block p,.block li{ font-size:.88rem; max-width:66ch; }
+  .block ul{ margin:.25rem 0 0; padding-left:1.2rem; }
+  .vids{ display:flex; flex-direction:column; gap:5px; margin-top:6px; }
+  .vid{ display:flex; align-items:center; gap:8px; background:var(--paper); border-radius:9px; padding:6px 11px; font-size:.84rem; }
+  .vid a{ font-family:var(--fd); font-weight:700; text-decoration:none; }
+  .vid .rec{ margin-left:auto; font-family:var(--fd); font-weight:700; font-size:.68rem; color:var(--parts); background:var(--parts-bg); border-radius:999px; padding:2px 9px; white-space:nowrap; }
+
+  .foot{ margin-top:26px; padding-top:12px; border-top:1px solid var(--line); font-size:.78rem; color:var(--ink-soft); }
+  @media print{
+    @page{ size:Letter portrait; margin:10mm; }
+    body{ background:#fff; font-size:10.5pt; }
+    .btnrow{ display:none; }
+    details.day .dbody{ display:block !important; }
+    .panel,.slot,.vid,.block{ break-inside:avoid; }
+    a{ color:inherit; }
+  }
+</style>
+
+<div class="wrap">
+  <h1>🦸🏾‍♀️ Week Playbook — Junior Designers · Ages 10–13</h1>
+  <p class="sub">Owning Your Superpower: one week from gamer → game designer → leader, with <b>Threadbare</b>. This is YOUR track at a glance — every workshop, lab, and link, colour-coded like the rest of the kit.</p>
+  <div class="btnrow">
+    <button class="btn" onclick="window.print()">🖨 Print</button>
+    <button class="btn ghost" id="themeBtn" type="button">◐ Theme</button>
+    <button class="btn ghost" id="openAll" type="button">⬇ Open all days</button>
+  </div>
+
+  <h2 class="sec">What you'll accomplish</h2>
+  <div class="paths">
+    <div class="path" style="--hue:var(--parts)"><h3>Junior Designers · 10–13</h3><p>Learn how games actually work, deep-diving the design process with <b>Threadbare</b>.</p></div>
+    <div class="path" style="--hue:var(--go)"><h3>The Ultimate Challenge</h3><p>Everyone: turn your own original idea into a live, launch-ready platformer.</p></div>
+    <div class="path" style="--hue:var(--settings)"><h3>Team Superhero Comic</h3><p>In groups of 3–4: write, design &amp; publish a superhero comic with real world-building.</p></div>
+  </div>
+
+  <div class="code-callout">🔑 <b>For facilitators:</b> Threadbare (10–13) Endless facilitator code <code>BGC26AETBAdmin</code></div>
+
+  <h2 class="sec">Your digital toolbelt</h2>
+  <div class="panel tablewrap">
+    <table>
+      <tr><th>Tool</th><th>What it's for</th></tr>
+      <tr><td><b>Canva</b></td><td>Your creative studio — comic books, moodboards, storyboards.</td></tr>
+      <tr><td><b>Threadbare</b></td><td>Interactive intro to core game mechanics (10–13 track).</td></tr>
+      <tr><td><b>Godot Engine</b></td><td>The professional game engine where you write real code.</td></tr>
+      <tr><td><b>Piskel</b></td><td>Pixel-art editor for sprites, tiles &amp; frame-by-frame animation.</td></tr>
+      <tr><td><b>Google Gemini</b></td><td>AI brainstorming partner for concept art, lore &amp; creative text.</td></tr>
+      <tr><td><b><a href="https://drive.google.com/drive/folders/1z-KcEHrIws3qpExZPyMkwqEfgIXIH-7g?usp=sharing">Asset Folder Library</a></b></td><td>Ready-to-use characters, animations &amp; tilemap worlds for your game.</td></tr>
+      <tr><td><b><a href="https://itch.io/game-assets/free/tag-characters">itch.io free assets</a></b></td><td>Even more downloadable art if you want it.</td></tr>
+    </table>
+  </div>
+
+  <h2 class="sec">Your milestones (how you win the week)</h2>
+  <div class="panel">
+    <ol>
+      <li><b>Technical Mastery</b> — finish the full 10-session Threadbare curriculum.</li>
+      <li><b>Collaborative Leadership</b> — publish your group's Superhero Comic in Canva, weaving in the morning leadership frameworks.</li>
+      <li><b>Creative Innovation Challenge</b> <i>(optional)</i> — custom mechanics, secret levels, or your own scoring system.</li>
+    </ol>
+  </div>
+
+  <h2 class="sec">Every day's rhythm</h2>
+  <div class="sched">
+    <div class="slot"><b>9:30 – 9:55</b><span>🥣 Kickoff &amp; Breakfast</span></div>
+    <div class="slot"><b>9:55 – 10:00</b><span>💡 The Daily Brain-Teaser</span></div>
+    <div class="slot"><b>10:00 – 10:30</b><span>⚡ Empowerment Hour — Girls Leadership Warm-Up</span></div>
+    <div class="slot"><b>10:30 – 12:00</b><span>💻 Deep Dive — Morning Coding Lab</span></div>
+    <div class="slot"><b>12:00 – 1:00</b><span>🍎 Fuel Break (Lunch)</span></div>
+    <div class="slot"><b>1:00 – 3:15</b><span>🚀 Creator Mode — Afternoon Coding Session</span></div>
+    <div class="slot"><b>3:15 – 3:45</b><span>🎨 Team Challenge — Superhero Comic Design</span></div>
+    <div class="slot"><b>3:45 – 4:00</b><span>📋 Mission Debrief &amp; Sign-Out</span></div>
+  </div>
+
+  <h2 class="sec">The five days</h2>
+
+  <!-- MONDAY -->
+  <details class="day" open style="--hue:var(--parts)">
+    <summary><span class="dbadge">MON</span><strong>The Design Process &amp; Redefining Leadership</strong><span class="chev">▶</span></summary>
+    <div class="dbody">
+      <div class="qod"><b>Questions of the day</b>Imagine leadership as a personal superpower — what does it look like when it lifts others up? · How does coding bridge a wild imagination to a finished, working project?</div>
+      <div class="block"><h4><span class="tag t-lead">Leadership</span>Workshop 1 · Redefining Leadership</h4>
+        <p>Forget "loudest person in the room." Real leadership = <b>empathy, active listening, confidence, community impact</b>. Find how your traits make you a natural leader.</p>
+        <ul><li><a href="https://drive.google.com/file/d/1A-Kw9Aej29woAdeCSsPnsgYr6IznMdIW/view?usp=sharing">Lean In Girls guide</a> → Ignite Session (pg. 7–9) · Vision Board (pg. 10–13)</li></ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Morning Lab · Game Mechanics &amp; Deconstruction</h4>
+        <p>Great engineers observe first. Watch <a href="https://www.youtube.com/watch?v=5kcdRBHM7kM&t=1s">this game being played</a> and break it into: the <b>Mechanics</b> (rules), the <b>Technical Blueprint</b> (code &amp; nodes behind it), and the <b>Narrative Atmosphere</b> (story &amp; biomes).</p>
+        <ul>
+          <li><b>10–13:</b> Endless — <a href="https://drive.google.com/file/d/1-WHoYYuktBfJ_5YWUnOocmDDH5GRme22/view?usp=sharing">Workflow &amp; Organization</a> · <a href="https://drive.google.com/file/d/1QRWr-I9oE05yvh_KzafOVDhlFUfSL16S/view?usp=sharing">Visual Storyboarding</a></li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Afternoon Lab · Building Custom Character Assets</h4>
+        <ul>
+          <li><b>10–13:</b> Endless — <a href="https://drive.google.com/file/d/1l7wCZzgLXvsDCy_o7sbRnm3s7_XBiZTi/view?usp=sharing">Aesthetics &amp; Visual Design</a> · <a href="https://drive.google.com/file/d/1lSKy0S2pzMhxWtuJONntlYZ2Hzg3jcSC/view?usp=sharing">Animation &amp; Effects</a></li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-game">Your game</span>Create-Your-Own-Game track <i style="font-weight:400;color:var(--ink-soft)">(optional — want to build a Godot game too? go for it!)</i></h4>
+        <div class="vids">
+          <div class="vid">🎨 <a href="https://www.youtube.com/watch?v=V6w0gDwVeLM&t=1s">How to make a moodboard in Canva</a><span class="rec">Recipe #2</span></div>
+          <div class="vid">🎨 <a href="https://www.loom.com/share/531b2488d1b94a058b769061a8bed5ef">Moodboard tutorial (Loom)</a><span class="rec">Recipe #2</span></div>
+          <div class="vid">🧱 <a href="https://www.youtube.com/watch?v=S_jXiouPwrQ">2D tilesets with Godot &amp; Piskel</a></div>
+          <div class="vid">🐟 <a href="https://www.loom.com/share/ca8a42342052466d9a47fc61707e5a1a">Opening Godot &amp; creating a project</a><span class="rec">Recipe #3</span></div>
+          <div class="vid">🐟 <a href="https://www.loom.com/share/6ab2b731cf514397a21356e1082f0db9">Import game assets into Godot</a><span class="rec">Recipe #4</span></div>
+          <div class="vid">🐟 <a href="https://www.loom.com/share/239adc68a28e45c3b2b8c22dfffd95e4">Creating a Player in Godot</a><span class="rec">Recipe #5</span></div>
+          <div class="vid">🐟 <a href="https://www.loom.com/share/92ed70fd52fd4649b0edcac1dc66ecda">Add Player scene &amp; playtest</a><span class="rec">Recipe #6</span></div>
+        </div>
+      </div>
+      <div class="block"><h4><span class="tag t-comic">Comic</span>Leadership Lab 1 · Launch your Superhero Comic</h4>
+        <p>Teams of 3–4. Turn your personal "superpowers" into superhero characters, and map the intro with the <b>Hero's Journey Circle</b> (the 12-step roadmap movie writers use).</p>
+        <ul><li><a href="https://www.youtube.com/watch?v=Hhk4N9A0oCA&t=1s">What is the Hero's Journey?</a> · <a href="https://www.loom.com/share/775686c1c92d4a84a59b576b380d2522">Comic template in Canva</a> <b style="color:var(--parts)">(Recipe #1)</b></li></ul>
+      </div>
+    </div>
+  </details>
+
+  <!-- TUESDAY -->
+  <details class="day" style="--hue:var(--stage)">
+    <summary><span class="dbadge">TUE</span><strong>Gameplay Mechanics &amp; Unlocking Superpowers</strong><span class="chev">▶</span></summary>
+    <div class="dbody">
+      <div class="qod"><b>Question of the day</b>If you could unlock any superpower today, what would it be — and how are your real-life best qualities already your real-world superpowers?</div>
+      <div class="block"><h4><span class="tag t-lead">Leadership</span>Workshop 2 · Discovering Your Leadership Superpowers</h4>
+        <p>Empathy, organization, artistic vision, problem-solving, humor — all legitimate leadership superpowers. Map your top strengths and how they help your team.</p>
+        <ul><li><a href="https://drive.google.com/file/d/1Q4jByzf6GquKC2byPwUMwW24k2Tku7wF/view?usp=sharing">Leadership guide</a> → Strengths Exploration (pg. 37–40)</li></ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Morning Lab · Core Gameplay &amp; Programming Systems</h4>
+        <p>A game without mechanics is a static picture. Today you write the rules of your universe.</p>
+        <ul>
+          <li><b>10–13:</b> Endless — <a href="https://drive.google.com/file/d/1eh6kVi4TB9mnI23Encyaz2tRukKD2sjJ/view?usp=sharing">Core Gameplay &amp; Mechanics</a> · <a href="https://drive.google.com/file/d/1bXfSJJ84nezx5oA5xpBH9Oxpw91EHaR4/view?usp=sharing">Gameplay &amp; Systems Programming</a></li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Afternoon Lab · Interactive Loops &amp; UX Design</h4>
+        <ul>
+          <li><b>10–13:</b> Endless — <a href="https://drive.google.com/file/d/15mxTYSqNux9wsaka5iAdD5zXUzruTrvq/view?usp=sharing">Game Feel &amp; UX</a> · <a href="https://drive.google.com/file/d/1TYzn2DltYoRXgFe0zHPzyHbqFCk_Pvsv/view?usp=sharing">Music &amp; Sound</a></li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-game">Your game</span>Create-Your-Own-Game track <i style="font-weight:400;color:var(--ink-soft)">(optional — want to build a Godot game too? go for it!)</i></h4>
+        <div class="vids">
+          <div class="vid">🧠 <a href="https://www.loom.com/share/637efba62d744179972f408c16cee33c">Adding a script, camera &amp; boundary</a><span class="rec">Recipe #7</span></div>
+          <div class="vid">⚡ <a href="https://www.loom.com/share/3cac040864f04e029c65423c8b479e9d">Changing player speed with constants</a><span class="rec">Recipe #8</span></div>
+          <div class="vid">🧱 <a href="https://www.loom.com/share/18753a9af6874aad9b5f3248ea6ffd70">Tilemaps &amp; platforms</a><span class="rec">Recipe #9</span></div>
+          <div class="vid">🖼️ <a href="https://www.loom.com/share/fc832ecad7d04e9098350f7f8582e111">Painting a background with tilesets</a><span class="rec">Recipe #10</span></div>
+          <div class="vid">🧱 <a href="https://www.loom.com/share/454e3b5807f1447bbc221f5bbe5b9c56">Adding platform scenes &amp; collisions</a><span class="rec">Recipe #11</span></div>
+          <div class="vid">🎢 <a href="https://www.loom.com/share/42afacf13e05424f9e273d42f6411a13">Animating moving platforms with keyframes</a><span class="rec">Recipe #12</span></div>
+          <div class="vid">⌨️ <a href="https://www.loom.com/share/dc0d443a9e904199a88e6097728c50fd">Key-binding movement &amp; jump animations</a><span class="rec">Recipe #13</span></div>
+          <div class="vid">🎬 <a href="https://www.loom.com/share/a89851c45a294c90bb0acc6c2074e487">Fix player animations with code</a><span class="rec">Recipe #14</span></div>
+        </div>
+      </div>
+      <div class="block"><h4><span class="tag t-comic">Comic</span>Leadership Lab 2 · Superpowers into your script</h4>
+        <p>Advance through <b>Stages 4–8</b> of the Hero's Journey: write this morning's leadership superpowers into your characters' dialogue and choices, cross the threshold, meet allies, face the first big tests.</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- WEDNESDAY -->
+  <details class="day" style="--hue:var(--files)">
+    <summary><span class="dbadge">WED</span><strong>User Experience &amp; Challenging Stereotypes</strong><span class="chev">▶</span></summary>
+    <div class="dbody">
+      <div class="qod"><b>Questions of the day</b>What is a "stereotype," and how do they form? · Can a stereotype ever be truly "positive," or are they naturally limiting?</div>
+      <div class="block"><h4><span class="tag t-lead">Leadership</span>Workshop 3 · Challenging Perspectives &amp; Breaking Barriers</h4>
+        <p>How stereotypes hold people back — especially in tech — and how to spot them, break barriers, and build a team where everyone's authentic identity counts.</p>
+        <ul><li><a href="https://drive.google.com/file/d/1hKpXo_kQPyKP3-2G90gPO0GKrtdmk9lv/view?usp=sharing">Leadership guide</a> → Unpacking Stereotypes (pg. 11–14) · Stereotypes Stomp (pg. 15–16)</li></ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Morning Lab · Optimization &amp; Progression</h4>
+        <ul>
+          <li><b>10–13:</b> Final modules — <i>Optimization &amp; Performance</i> + <i>Progression &amp; Motivation</i>. 🎉 <b>Core curriculum complete!</b></li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-game">Your game</span>Afternoon · Independent Developer Time</h4>
+        <p>Both cohorts graduate to <b>open studio</b>. Build your own levels: scoreboards &amp; on-screen text, audio systems, and clean folders ready to export. Today's toys all have recipes in the SOP Book:</p>
+        <div class="vids">
+          <div class="vid">🔁 Restart zones<span class="rec">Recipe #15</span></div>
+          <div class="vid">🪙 Coins with player-only detection<span class="rec">Recipe #16</span></div>
+          <div class="vid">👹 Patrolling enemies<span class="rec">Recipe #17</span></div>
+          <div class="vid">💫 Fall effect on enemy hit<span class="rec">Recipe #18</span></div>
+          <div class="vid">💬 On-screen instructions<span class="rec">Recipe #19</span></div>
+          <div class="vid">🔊 Jump &amp; coin sound effects<span class="rec">Recipe #20</span></div>
+          <div class="vid">🏆 Score tracking &amp; win message<span class="rec">Recipe #21</span></div>
+        </div>
+      </div>
+      <div class="block"><h4><span class="tag t-comic">Comic</span>Leadership Lab 3 · Climax &amp; Resolution</h4>
+        <p>Push through <b>Steps 8–12</b>: the Supreme Ordeal (your heroes' combined superpowers vs. their greatest challenge), intentionally <b>defeat a real-world stereotype</b>, and Return with the Elixir — home, changed, ready to lift their community.</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- THURSDAY -->
+  <details class="day" style="--hue:var(--settings)">
+    <summary><span class="dbadge">THU</span><strong>Playtesting, Feedback &amp; Presentation Prep</strong><span class="chev">▶</span></summary>
+    <div class="dbody">
+      <div class="qod"><b>Question of the day</b>Recall a moment you felt nervous about a brand-new challenge. What inner strength pushed you through — and how does that courage make you a leader who inspires others?</div>
+      <div class="block"><h4><span class="tag t-lead">Leadership</span>Workshop 4 · Inspiring Girls to Go For It</h4>
+        <p>Ideas + skills need one more thing: the <b>courage to step into the spotlight</b>. Practice speaking confidently about your work and turning this week into real-world action.</p>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Morning Lab · QA &amp; Peer Playtesting</h4>
+        <ul>
+          <li><b>Hour 1 — The Polish:</b> final touches on terrain, sound levels, animations.</li>
+          <li><b>Hour 2 — The Exchange:</b> swap laptops! Hunt for bugs, broken collisions, unclear paths in each other's games.</li>
+          <li><b>The Feedback Loop:</b> fill the official <i>Playtest Feedback Form</i> — constructive, clear, kind.</li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Coding</span>Afternoon · Feedback → Polish + Slides</h4>
+        <ul>
+          <li><b>Rapid prototyping:</b> fix at least one major issue your playtester found.</li>
+          <li><b>Developer Spotlight slide:</b> your concept, code snippets, Piskel art, and growth story.</li>
+          <li><b>Superhero Team pitch deck:</b> lore, Canva art pages, and how the Hero's Journey showcases real leadership.</li>
+        </ul>
+      </div>
+      <div class="block"><h4><span class="tag t-comic">Showcase</span>Evening · Dress Rehearsal (Science-Fair format)</h4>
+        <p>Stations set: game loaded on one screen, slides on another, one device showing the team comic. Room splits into two shifts — Shift A presents while Shift B tours and asks questions, then swap after 20 minutes.</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- FRIDAY -->
+  <details class="day" style="--hue:var(--go)">
+    <summary><span class="dbadge">FRI</span><strong>Exhibition Day &amp; Career Pathways</strong><span class="chev">▶</span></summary>
+    <div class="dbody">
+      <div class="qod"><b>Question of the day</b>How have you evolved since Monday morning? Which achievement — which newly unlocked superpower — makes you proudest?</div>
+      <div class="block"><h4><span class="tag t-lead">Careers</span>Morning · Mapping Tech Careers</h4>
+        <p>Everything you did this week is a real, paid job somewhere:</p>
+        <div class="tablewrap"><table>
+          <tr><th>Career</th><th>What they do</th><th>You did it when you…</th></tr>
+          <tr><td><b>Gameplay Programmer</b></td><td>Core scripts, physics, collisions</td><td>wrote movement scripts &amp; restart loops in Godot</td></tr>
+          <tr><td><b>Level Designer</b></td><td>Maps worlds, balances difficulty</td><td>placed tiles, spikes, coins &amp; progression</td></tr>
+          <tr><td><b>Technical Artist</b></td><td>Characters &amp; frame-by-frame animation</td><td>drew avatars, monsters &amp; tiles in Piskel</td></tr>
+          <tr><td><b>Creative Director</b></td><td>Lore, worlds, dialogue</td><td>drafted profiles &amp; scripts for your comic</td></tr>
+          <tr><td><b>Project Manager</b></td><td>Leads teams, keeps everyone unblocked</td><td>ran your group with Lean In frameworks</td></tr>
+        </table></div>
+        <p style="margin-top:8px">These exact pipelines are used daily at <b>Nintendo, Epic Games, Roblox, Pixar, Cartoon Network, Google, and Apple</b>.</p>
+      </div>
+      <div class="block"><h4><span class="tag t-comic">Showcase</span>Afternoon · The Official Project Showcase 🎉</h4>
+        <ol>
+          <li>Hand guests the keyboard — let them <b>play your level</b>.</li>
+          <li>Walk them through a coding challenge you hit and <b>how you solved it</b>.</li>
+          <li>Present your team's comic — how your real superpowers guided your hero's journey.</li>
+        </ol>
+        <p style="color:var(--ink-soft)">(Complete your post-surveys first — they're in the student handout.)</p>
+      </div>
+      <div class="block"><h4><span class="tag t-code">Next steps</span>Keep building your superpowers</h4>
+        <ul>
+          <li><b>Download Godot</b> — it's 100% free. Copy your project home and keep expanding it.</li>
+          <li><b>Virtual workshops:</b> <a href="https://www.wearebgc.org/">wearebgc.org</a></li>
+          <li><b>Code-along episodes:</b> <a href="https://bit.ly/bgccodealong">bit.ly/bgccodealong</a></li>
+        </ul>
+        <p style="font-family:var(--fd);font-weight:700;margin-top:8px">Your creativity + leadership + code = endless possibilities. Keep building! 🐠</p>
+      </div>
+    </div>
+  </details>
+
+  <div class="foot"><p>Polished from the BGC "Leading Through Code: Owning Your Superpower" playbook — same content, same links, kit colour-coding. <b>Recipe #N</b> tags point into the companion Game-Build SOP Book (the appendix, polished separately).</p></div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+  var days=[].slice.call(document.querySelectorAll('details.day'));
+  var openAll=document.getElementById('openAll'), all=false;
+  openAll.addEventListener('click',function(){
+    all=!all; days.forEach(function(d){ d.open=all; });
+    openAll.textContent=all?'⬆ Close all days':'⬇ Open all days';
+  });
+})();
+</script>

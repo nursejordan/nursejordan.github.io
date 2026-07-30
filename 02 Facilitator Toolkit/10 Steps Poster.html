@@ -1,0 +1,133 @@
+<title>Reef Runner — 10 Steps Poster</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --paper:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; } }
+  :root[data-theme="dark"]{ --paper:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; }
+  :root[data-theme="light"]{ --paper:#eef3f0; --ink:#1c2a32; --ink-soft:#54666f; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); }
+  .bar{ max-width:860px; margin:0 auto; padding:16px 18px 4px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .bar p{ margin:0; font-size:.85rem; color:var(--ink-soft); }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:9px 18px; font-size:.9rem; cursor:pointer; }
+
+  .sheet{
+    background:#fff; color:#15202a; max-width:860px; margin:12px auto 40px;
+    border-radius:12px; box-shadow:0 12px 40px rgba(20,40,45,.14); padding:30px 34px 24px;
+  }
+  .head{ text-align:center; margin-bottom:18px; }
+  .head h1{ font-family:var(--fd); font-size:2.1rem; margin:0; color:#12463f; line-height:1.15; }
+  .head p{ margin:4px 0 0; color:#4a5b63; font-size:.95rem; font-family:var(--fd); font-weight:700; }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .card{
+    display:flex; align-items:center; gap:14px;
+    border:2.5px solid var(--hue,#0f8a7e); background:var(--huebg,#dcf0ec);
+    border-radius:16px; padding:12px 16px;
+  }
+  .card .n{
+    font-family:var(--fd); font-weight:700; font-size:1.5rem; color:#fff;
+    background:var(--hue,#0f8a7e); width:52px; height:52px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  }
+  .card .e{ font-size:1.9rem; line-height:1; flex:0 0 auto; }
+  .card h2{ font-family:var(--fd); font-size:1.18rem; margin:0; line-height:1.2; color:#15202a; }
+  .card p{ margin:2px 0 0; font-size:.78rem; color:#44565f; line-height:1.35; }
+
+  .keyrow{
+    display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
+    margin-top:18px; padding-top:14px; border-top:2px dashed #cdd8d3;
+    font-family:var(--fd); font-weight:700; font-size:.8rem; color:#44565f;
+  }
+  .keyrow span{ display:inline-flex; align-items:center; gap:6px; }
+  .keyrow i{ width:14px; height:14px; border-radius:4px; display:inline-block; }
+  .motto{ text-align:center; font-family:var(--fd); font-weight:700; color:#12463f; margin-top:12px; font-size:1rem; }
+
+  @media (max-width:620px){ .grid{ grid-template-columns:1fr; } }
+  @media print{
+    @page{ size:Letter portrait; margin:9mm; }
+    body{ background:#fff; }
+    .bar{ display:none; }
+    .sheet{ box-shadow:none; border-radius:0; margin:0; padding:0; max-width:none; }
+    .grid{ gap:8px; }
+    .card{ padding:9px 13px; }
+  }
+</style>
+
+<div class="bar">
+  <p>Print big and put it on the wall — the 10 steps, no code, just the journey. 🖨 Tip: in the print box, set scale to “Fit to page”.</p>
+  <button class="btn" onclick="window.print()">🖨 Print poster</button>
+</div>
+
+<div class="sheet">
+  <div class="head">
+    <h1>🐠 Build a Platformer in 10 Steps</h1>
+    <p>Every game you love was made exactly like this.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card" style="--hue:#c9821f;--huebg:#faeecd">
+      <span class="n">1</span><span class="e">🎨</span>
+      <div><h2>Get your art</h2><p>Grab the sprites · make pixels crisp (Filter → Nearest)</p></div>
+    </div>
+    <div class="card" style="--hue:#0f8a7e;--huebg:#dcf0ec">
+      <span class="n">2</span><span class="e">🧱</span>
+      <div><h2>Make your tiles</h2><p>TileMapLayer + your tile picture = building blocks</p></div>
+    </div>
+    <div class="card" style="--hue:#2f7fbf;--huebg:#e4eff8">
+      <span class="n">3</span><span class="e">🖌️</span>
+      <div><h2>Paint your level</h2><p>Draw floors &amp; platforms like a coloring book</p></div>
+    </div>
+    <div class="card" style="--hue:#0f8a7e;--huebg:#dcf0ec">
+      <span class="n">4</span><span class="e">🐟</span>
+      <div><h2>Build the Player</h2><p>Body + picture + bump-shape + camera — the family of 4</p></div>
+    </div>
+    <div class="card" style="--hue:#e56a53;--huebg:#fbe6e0">
+      <span class="n">5</span><span class="e">🎞️</span>
+      <div><h2>Load her poses</h2><p>The sprite sheet = all her moves in one picture</p></div>
+    </div>
+    <div class="card" style="--hue:#c9821f;--huebg:#faeecd">
+      <span class="n">6</span><span class="e">⌨️</span>
+      <div><h2>Teach the keys</h2><p>left · right · jump — spelled exactly</p></div>
+    </div>
+    <div class="card" style="--hue:#0f8a7e;--huebg:#dcf0ec">
+      <span class="n">7</span><span class="e">🧠</span>
+      <div><h2>Brain 1: walk &amp; fall</h2><p>Arrows move her · gravity pulls her down</p></div>
+    </div>
+    <div class="card" style="--hue:#0f8a7e;--huebg:#dcf0ec">
+      <span class="n">8</span><span class="e">🚀</span>
+      <div><h2>Brain 2: jump</h2><p>Space + on the floor · remember: negative = UP!</p></div>
+    </div>
+    <div class="card" style="--hue:#7d5cc4;--huebg:#eae4f6">
+      <span class="n">9</span><span class="e">✨</span>
+      <div><h2>Brain 3: smooth moves</h2><p>Speed up slowly, glide to a stop — the pro feel</p></div>
+    </div>
+    <div class="card" style="--hue:#c9821f;--huebg:#faeecd">
+      <span class="n">10</span><span class="e">🎬</span>
+      <div><h2>Animate + press GO!</h2><p>Idle, run, jump, fall — then ▶ and CHEER 🎉</p></div>
+    </div>
+  </div>
+
+  <div class="keyrow">
+    <span><i style="background:#0f8a7e"></i>Parts</span>
+    <span><i style="background:#2f7fbf"></i>Stage</span>
+    <span><i style="background:#e56a53"></i>Settings</span>
+    <span><i style="background:#7d5cc4"></i>Files</span>
+    <span><i style="background:#c9821f"></i>GO ▶</span>
+  </div>
+  <p class="motto">Break it → Undo → try again. That's how game makers work.</p>
+</div>
+
+<script>
+  var root=document.documentElement;
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+</script>

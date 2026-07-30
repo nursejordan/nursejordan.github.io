@@ -1,0 +1,160 @@
+<title>Reef Runner — Coloring Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#e9efec; --ink:#1c2a32; --ink-soft:#54666f; --accent:#0f8a7e;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --bg:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; } }
+  :root[data-theme="dark"]{ --bg:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; }
+  :root[data-theme="light"]{ --bg:#e9efec; --ink:#1c2a32; --ink-soft:#54666f; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--fb); }
+  .bar{ max-width:820px; margin:0 auto; padding:16px 18px 6px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; }
+  .bar p{ margin:0; font-size:.86rem; color:var(--ink-soft); max-width:52ch; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--accent); color:#fff; border:0; border-radius:999px; padding:9px 18px; font-size:.9rem; cursor:pointer; }
+
+  /* the printable white sheet */
+  .sheet{
+    background:#fff; color:#15202a; max-width:820px; margin:10px auto 40px;
+    border-radius:12px; box-shadow:0 12px 40px rgba(20,40,45,.14); padding:26px 30px 20px;
+  }
+  .sheet .title{ font-family:var(--fd); font-weight:700; text-align:center; font-size:1.8rem; margin:0; color:#12463f; }
+  .sheet .say{ text-align:center; font-family:var(--fb); font-size:.92rem; color:#4a5b63; margin:6px 0 4px; }
+  .sheet .name{ font-family:var(--fd); font-weight:700; font-size:1rem; margin:10px 0 2px; color:#15202a; }
+  .sheet .name span{ display:inline-block; border-bottom:2px solid #15202a; width:260px; }
+  svg{ display:block; width:100%; height:auto; }
+
+  @media print{
+    @page{ size:Letter portrait; margin:10mm; }
+    body{ background:#fff; }
+    .bar{ display:none; }
+    .sheet{ box-shadow:none; border-radius:0; margin:0; padding:0; max-width:none; }
+  }
+</style>
+
+<div class="bar">
+  <p>Print it and hand it out. The girls color the diver <b>Reef Runner</b> hero — then fill the reef with their own colors. A calm warm-up before the coding starts.</p>
+  <button class="btn" onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="sheet">
+  <h1 class="title">🐠 Color Your Reef Runner Hero!</h1>
+  <p class="say">Give her YOUR colors — then fill the whole reef with your own.</p>
+  <p class="name">NAME: <span></span></p>
+
+  <svg viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coloring page: a girl scuba-diver hero with reef fish, coral, a starfish and bubbles">
+    <!-- frame -->
+    <rect x="8" y="8" width="664" height="704" rx="22" fill="#fff" stroke="#15202a" stroke-width="3"/>
+
+    <g fill="#fff" stroke="#15202a" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">
+
+      <!-- ===== BACKGROUND SCENERY (behind diver) ===== -->
+      <!-- bubbles -->
+      <circle cx="470" cy="70" r="10"/>
+      <circle cx="452" cy="104" r="7"/>
+      <circle cx="486" cy="120" r="6"/>
+      <circle cx="500" cy="180" r="9"/>
+      <circle cx="176" cy="150" r="8"/>
+      <circle cx="150" cy="118" r="6"/>
+      <circle cx="205" cy="118" r="5"/>
+
+      <!-- fish top-right (facing left) -->
+      <g>
+        <ellipse cx="560" cy="235" rx="40" ry="26"/>
+        <path d="M598,235 L636,209 L636,261 Z"/>
+        <path d="M545,210 Q560,193 578,209" fill="none"/>
+        <path d="M535,240 Q548,250 560,242" fill="none"/>
+      </g>
+      <circle cx="542" cy="227" r="4" fill="#15202a" stroke="none"/>
+
+      <!-- fish mid-left (facing right) -->
+      <g>
+        <ellipse cx="105" cy="420" rx="38" ry="24"/>
+        <path d="M67,420 L35,398 L35,442 Z"/>
+        <path d="M120,398 Q105,382 90,398" fill="none"/>
+        <path d="M115,424 Q104,433 92,426" fill="none"/>
+      </g>
+      <circle cx="123" cy="412" r="4" fill="#15202a" stroke="none"/>
+
+      <!-- small fish right (facing left) -->
+      <g>
+        <ellipse cx="475" cy="500" rx="28" ry="18"/>
+        <path d="M503,500 L527,485 L527,515 Z"/>
+        <path d="M463,504 Q472,512 483,505" fill="none"/>
+      </g>
+      <circle cx="461" cy="494" r="3.4" fill="#15202a" stroke="none"/>
+
+      <!-- ===== THE DIVER HERO ===== -->
+      <!-- hair puffs (behind head) -->
+      <circle cx="292" cy="112" r="34"/>
+      <circle cx="388" cy="112" r="34"/>
+      <circle cx="340" cy="90" r="30"/>
+      <!-- head -->
+      <circle cx="340" cy="155" r="60"/>
+      <!-- mask strap -->
+      <path d="M300,152 L282,150" fill="none"/>
+      <path d="M380,152 L398,150" fill="none"/>
+      <!-- dive mask -->
+      <rect x="300" y="136" width="80" height="42" rx="18"/>
+      <circle cx="322" cy="157" r="12.5"/>
+      <circle cx="358" cy="157" r="12.5"/>
+      <!-- smile -->
+      <path d="M320,190 Q340,208 360,190" fill="none"/>
+      <!-- neck -->
+      <rect x="326" y="208" width="28" height="20" rx="6"/>
+
+      <!-- arms (out like ta-da) -->
+      <rect x="220" y="232" width="76" height="26" rx="13"/>
+      <circle cx="220" cy="245" r="16"/>
+      <rect x="384" y="232" width="76" height="26" rx="13"/>
+      <circle cx="460" cy="245" r="16"/>
+
+      <!-- body / wetsuit -->
+      <rect x="289" y="224" width="102" height="124" rx="28"/>
+      <!-- chest star badge -->
+      <polygon points="340,254 344.1,264.3 355.2,265.1 346.7,272.2 349.4,282.9 340,277 330.6,282.9 333.3,272.2 324.8,265.1 335.9,264.3"/>
+
+      <!-- legs -->
+      <rect x="304" y="342" width="26" height="80" rx="13"/>
+      <rect x="350" y="342" width="26" height="80" rx="13"/>
+      <!-- flippers -->
+      <path d="M317,412 C295,432 287,472 305,488 C321,480 331,452 329,420 Z"/>
+      <path d="M363,412 C385,432 393,472 375,488 C359,480 349,452 351,420 Z"/>
+
+      <!-- ===== FOREGROUND SEA FLOOR ===== -->
+      <!-- sand -->
+      <path d="M8,632 C 90,606 160,656 250,630 C 330,606 405,652 495,628 C 565,610 630,648 672,630 L672,704 L8,704 Z"/>
+      <!-- pebbles -->
+      <ellipse cx="150" cy="666" rx="14" ry="8"/>
+      <ellipse cx="205" cy="678" rx="10" ry="6"/>
+      <ellipse cx="520" cy="668" rx="15" ry="8"/>
+
+      <!-- starfish on the sand -->
+      <polygon points="340,600 351.8,631.8 385.7,633.2 359,654.2 368.2,686.8 340,668 311.8,686.8 320.98,654.2 294.35,633.2 328.24,631.8"/>
+      <circle cx="331" cy="632" r="3.2" fill="#15202a" stroke="none"/>
+      <circle cx="349" cy="632" r="3.2" fill="#15202a" stroke="none"/>
+      <path d="M331,642 Q340,650 349,642" fill="none"/>
+
+      <!-- coral bottom-left -->
+      <rect x="60" y="576" width="15" height="66" rx="7"/>
+      <rect x="82" y="560" width="15" height="82" rx="7"/>
+      <rect x="104" y="588" width="15" height="54" rx="7"/>
+      <!-- coral bottom-right -->
+      <rect x="574" y="560" width="16" height="80" rx="8"/>
+      <rect x="598" y="544" width="16" height="96" rx="8"/>
+      <rect x="622" y="576" width="16" height="64" rx="8"/>
+
+      <!-- seaweed hint -->
+      <path d="M440,630 C 428,596 452,576 438,548 C 428,528 448,514 440,494" fill="none"/>
+      <path d="M456,632 C 446,600 466,584 456,560" fill="none"/>
+
+    </g>
+  </svg>
+</div>
+
+<script>
+  var root=document.documentElement;
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+</script>

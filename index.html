@@ -1,49 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>BGC Godot Camp — START HERE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#ffffff;
+    --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+    --shadow:0 1px 2px rgba(20,40,45,.06), 0 6px 20px rgba(20,40,45,.07);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#c9821f; --go-bg:#faeecd;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.6; font-size:17px; }
+  .wrap{ max-width:960px; margin:0 auto; padding:30px 22px 80px; }
+
+  .topbar{ display:flex; justify-content:flex-end; gap:8px; margin-bottom:6px; }
+  .btn{ font-family:var(--fd); font-weight:700; font-size:.8rem; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:7px 14px; cursor:pointer; }
+  .btn:hover{ border-color:var(--ink-soft); }
+
+  .hero{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:30px 32px; box-shadow:var(--shadow); margin-bottom:24px; text-align:center; }
+  .hero .emoji{ font-size:2.6rem; margin-bottom:6px; }
+  .hero h1{ font-family:var(--fd); font-size:clamp(1.6rem,4.2vw,2.3rem); margin:0 0 8px; }
+  .hero p{ color:var(--ink-soft); max-width:60ch; margin:0 auto; font-size:1rem; }
+
+  .callout{ background:var(--go-bg); border-radius:14px; padding:16px 20px; margin:0 0 26px; font-size:.94rem; }
+  .callout b{ font-family:var(--fd); color:var(--go); }
+
+  .howto{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; margin-bottom:30px; }
+  .howto h2{ font-family:var(--fd); font-size:1.15rem; margin:0 0 8px; }
+  .howto ol{ margin:0; padding-left:1.3rem; }
+  .howto li{ margin:.4rem 0; font-size:.94rem; }
+  .howto code{ background:var(--paper-2); border-radius:5px; padding:1px 6px; font-family:monospace; }
+
+  .toc{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:34px; }
+  .toc a{ font-family:var(--fd); font-weight:700; font-size:.82rem; text-decoration:none; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:999px; padding:7px 15px; }
+  .toc a:hover{ border-color:var(--ink-soft); }
+  .toc a .dot{ display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:7px; vertical-align:middle; }
+
+  section.chapter{ margin-bottom:38px; scroll-margin-top:20px; }
+  .chead{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .chead .num{ font-family:var(--fd); font-weight:700; color:#fff; background:var(--hue); width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; flex:0 0 auto; }
+  .chead h2{ font-family:var(--fd); font-size:1.35rem; margin:0; }
+  .csub{ color:var(--ink-soft); font-size:.9rem; margin:0 0 14px; max-width:66ch; }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-left:5px solid var(--hue); border-radius:13px; padding:14px 17px; box-shadow:var(--shadow); }
+  .card h3{ font-family:var(--fd); font-size:1.02rem; margin:0 0 3px; }
+  .card p{ margin:0 0 10px; font-size:.85rem; color:var(--ink-soft); }
+  .filerow{ display:flex; gap:8px; flex-wrap:wrap; }
+  .flink{ font-family:var(--fd); font-weight:700; font-size:.76rem; text-decoration:none; border-radius:999px; padding:5px 12px; display:inline-flex; align-items:center; gap:5px; }
+  .flink.open{ background:var(--hue-bg); color:var(--hue); }
+  .flink.print{ background:var(--paper-2); color:var(--ink); }
+  .flink:hover{ filter:brightness(0.95); }
+
+  .hue-parts{ --hue:var(--parts); --hue-bg:var(--parts-bg); }
+  .hue-stage{ --hue:var(--stage); --hue-bg:var(--stage-bg); }
+  .hue-settings{ --hue:var(--settings); --hue-bg:var(--settings-bg); }
+  .hue-files{ --hue:var(--files); --hue-bg:var(--files-bg); }
+  .hue-go{ --hue:var(--go); --hue-bg:var(--go-bg); }
+
+  .foot{ margin-top:30px; padding-top:16px; border-top:1px solid var(--line); font-size:.82rem; color:var(--ink-soft); text-align:center; }
+  @media print{ .topbar,.btn{ display:none; } }
+</style>
 </head>
 <body>
-    <h1>Guess the Number</h1>
-    <div class="score-display">
-        <p>Current score: <span class="score">10</span></p>
-        <p>High score: <span class="high-score">0</span></p>
-    </div>
-    <button id="reset" class="restart">Reset</button>
-    <div id="main-screen">
-        <div class="play">
-            <form>
-                <label for="guess">Guess a number from 1 to 100</label>
-                <!-- <input id="guess" name="guess" type="number" min="1" max="100" step="1" required> -->
-                <input id="guess" name="guess" type="text">
-                <button id="submit-guess" type="submit">Guess!</button>
-            </form>
-            <p id="guess-message"></p>
-        </div>
-        <div class="win" hidden>
-            <p class="emoji">&#128516;</p>
-            <h2>You win!</h2>
-            <p>Your guess was correct. <span class="secret-number"></span> is my secret number.</p>
-            <p>Your score: <span class="score"></span></p>
-            <p>Best: <span class="high-score"></span></p>
-            <button class="restart">Play again</button>
-        </div>
-        <div class="lose" hidden>
-            <p class="emoji">&#128557;</p>
-            <h2>Game over!</h2>
-            <p>Don't give up. You can win next time.</p>
-            <p>My secret number was <span class="secret-number"></span>.</p>
-            <button class="restart">Try again</button>
-        </div>
-    </div>
-    <figure id="guess-history">
-        <figcaption>Guess history</figcaption>
-        <ul id="guess-history-list"></ul>
-    </figure>
+<div class="wrap">
 
-    <script src="script.js"></script>
+  <div class="topbar">
+    <button class="btn" id="themeBtn" type="button">◐ Theme</button>
+  </div>
+
+  <div class="hero">
+    <div class="emoji">🐠📚</div>
+    <h1>Everything for the BGC Godot Camp — in ONE folder</h1>
+    <p>This page is your front door. Every guide, worksheet, slide deck, and video you need lives one click away from here. Nothing else to search for.</p>
+  </div>
+
+  <div class="callout">
+    <b>What happened to the file that wouldn't open?</b> It was a broken 64-byte placeholder, not a real page — deleted. Every link below has been freshly copied and checked, so they all open.
+  </div>
+
+  <div class="howto">
+    <h2>📌 How this folder works (read once)</h2>
+    <ol>
+      <li>Everything is grouped into <b>5 numbered folders</b> below — the order you'd actually use them.</li>
+      <li>Most items come in <b>two forms</b>: <span class="flink open" style="pointer-events:none">🖥️ Open</span> = the interactive version (click buttons, print, dark mode) and <span class="flink print" style="pointer-events:none">📄 PDF</span> = a plain file to print or attach anywhere.</li>
+      <li>Click any <b>🖥️ Open</b> button below to launch that page in your browser right now.</li>
+      <li>Keep this whole folder together — if you move it, this page still works because everything is linked <i>relatively</i> (i.e. it doesn't matter where the folder lives, as long as nothing inside gets separated).</li>
+    </ol>
+  </div>
+
+  <div class="toc" aria-label="Jump to a section">
+    <a href="#ch1"><span class="dot" style="background:var(--parts)"></span>For The Girls</a>
+    <a href="#ch2"><span class="dot" style="background:var(--settings)"></span>Facilitator Toolkit</a>
+    <a href="#ch3"><span class="dot" style="background:var(--go)"></span>Week Playbooks</a>
+    <a href="#ch4"><span class="dot" style="background:var(--files)"></span>Superhero Comic</a>
+    <a href="#ch5"><span class="dot" style="background:var(--stage)"></span>Watch</a>
+    <a href="Everything — One Book.pdf"><span class="dot" style="background:var(--ink-soft)"></span>📕 The whole thing as ONE PDF</a>
+  </div>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter" id="ch1">
+    <div class="chead"><span class="num" style="--hue:var(--parts)">1</span><h2>For The Girls</h2></div>
+    <p class="csub">🟩 What each student uses — the guide, printables, slides, and the game itself.</p>
+    <div class="cards">
+      <div class="card hue-parts">
+        <h3>📖 Reef Runner Guide</h3><p>The full lesson: the 4-colour map, 7 steps to a first jump, troubleshooting.</p>
+        <div class="filerow">
+          <a class="flink open" href="01 For The Girls/Reef Runner Guide.html">🖥️ Open</a>
+          <a class="flink print" href="01 For The Girls/Reef Runner Guide.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-parts">
+        <h3>📋 Cheat Sheet + Bookmarks</h3><p>One-page summary, plus 4 cut-out colour-key bookmarks for laptops.</p>
+        <div class="filerow">
+          <a class="flink open" href="01 For The Girls/Cheat Sheet + Bookmarks.html">🖥️ Open</a>
+          <a class="flink print" href="01 For The Girls/Cheat Sheet + Bookmarks.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-parts">
+        <h3>🎨 Coloring Page</h3><p>A warm-up sheet — the Reef Runner diver hero, ready to colour in.</p>
+        <div class="filerow">
+          <a class="flink open" href="01 For The Girls/Coloring Page.html">🖥️ Open</a>
+          <a class="flink print" href="01 For The Girls/Coloring Page.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-parts">
+        <h3>🎮 Mod Challenge Cards</h3><p>12 dares — Moon Jump, Lava Floor, Super Enemy — mapped to real knobs.</p>
+        <div class="filerow">
+          <a class="flink open" href="01 For The Girls/Mod Challenges.html">🖥️ Open</a>
+          <a class="flink print" href="01 For The Girls/Mod Challenges.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-parts">
+        <h3>🖥️ Teaching Slides</h3><p>20-slide click-through deck, plus an editable PowerPoint copy.</p>
+        <div class="filerow">
+          <a class="flink open" href="01 For The Girls/Teaching Slides.html">🖥️ Open</a>
+          <a class="flink print" href="01 For The Girls/Teaching Slides.pptx">📊 PowerPoint</a>
+        </div>
+      </div>
+      <div class="card hue-parts">
+        <h3>🕹️ The Moddable Game</h3><p>A working Godot 4 project the girls change and re-play — no art needed.</p>
+        <div class="filerow">
+          <a class="flink print" href="01 For The Girls/ReefRunnerTemplate.zip">🗜️ Download .zip</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="ch2">
+    <div class="chead"><span class="num" style="--hue:var(--settings)">2</span><h2>Facilitator Toolkit</h2></div>
+    <p class="csub">🟧 Your materials — what to say, how to set up, and the deep-reference SOPs.</p>
+    <div class="cards">
+      <div class="card hue-settings">
+        <h3>🗣️ Facilitator Script</h3><p>The exact line to say for each of the 20 slides.</p>
+        <div class="filerow">
+          <a class="flink open" href="02 Facilitator Toolkit/Facilitator Script.html">🖥️ Open</a>
+          <a class="flink print" href="02 Facilitator Toolkit/Facilitator Script.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-settings">
+        <h3>✅ Facilitator Setup Checklist</h3><p>Before-class one-pager: set up computers, print handouts, run the session.</p>
+        <div class="filerow">
+          <a class="flink open" href="02 Facilitator Toolkit/Facilitator Setup Checklist.html">🖥️ Open</a>
+          <a class="flink print" href="02 Facilitator Toolkit/Facilitator Setup Checklist.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-settings">
+        <h3>📚 SOP Book (All 21 Videos)</h3><p>Every camp tutorial video turned into a filterable, checkable how-to.</p>
+        <div class="filerow">
+          <a class="flink open" href="02 Facilitator Toolkit/SOP Book (All 21 Videos).html">🖥️ Open</a>
+          <a class="flink print" href="02 Facilitator Toolkit/SOP Book (All 21 Videos).pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-settings">
+        <h3>⏱️ SOP — 10-Minute Platformer</h3><p>Godot-4 translation of the classic YouTube speedrun tutorial, with timestamps.</p>
+        <div class="filerow">
+          <a class="flink open" href="02 Facilitator Toolkit/SOP - 10-Minute Platformer.html">🖥️ Open</a>
+          <a class="flink print" href="02 Facilitator Toolkit/SOP - 10-Minute Platformer.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-settings">
+        <h3>🖼️ 10 Steps Poster</h3><p>Wall poster — the whole build, zero code, one page.</p>
+        <div class="filerow">
+          <a class="flink open" href="02 Facilitator Toolkit/10 Steps Poster.html">🖥️ Open</a>
+          <a class="flink print" href="02 Facilitator Toolkit/10 Steps Poster.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-settings">
+        <h3>📝 16 Steps — Part Two</h3><p>Teacher one's teaching outline, Part Two written to match Part One.</p>
+        <div class="filerow">
+          <a class="flink print" href="02 Facilitator Toolkit/16 Steps - Part Two.txt">📄 Text file</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="ch3">
+    <div class="chead"><span class="num" style="--hue:var(--go)">3</span><h2>Week Playbooks</h2></div>
+    <p class="csub">🟨 The whole Mon–Fri camp schedule — leadership workshops, coding labs, links.</p>
+    <div class="cards">
+      <div class="card hue-go">
+        <h3>🦸🏾‍♀️ Week Playbook (Combined)</h3><p>Everyone's schedule together — your master copy.</p>
+        <div class="filerow">
+          <a class="flink open" href="03 Week Playbooks/Week Playbook (Combined).html">🖥️ Open</a>
+          <a class="flink print" href="03 Week Playbooks/Week Playbook (Combined).pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-go">
+        <h3>🧵 Junior Designers · 10–13</h3><p>Threadbare-only track — hand this one to the younger group.</p>
+        <div class="filerow">
+          <a class="flink open" href="03 Week Playbooks/Week Playbook - Junior 10-13.html">🖥️ Open</a>
+          <a class="flink print" href="03 Week Playbooks/Week Playbook - Junior 10-13.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-go">
+        <h3>🎮 Senior Engineers · 14–17</h3><p>Godot-only track, with the Endless access codes + ASU credential info.</p>
+        <div class="filerow">
+          <a class="flink open" href="03 Week Playbooks/Week Playbook - Senior 14-17.html">🖥️ Open</a>
+          <a class="flink print" href="03 Week Playbooks/Week Playbook - Senior 14-17.pdf">📄 PDF</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="ch4">
+    <div class="chead"><span class="num" style="--hue:var(--files)">4</span><h2>Superhero Comic Project</h2></div>
+    <p class="csub">🟪 Teams of 3–4 build a real comic — real superpowers, real world-building.</p>
+    <div class="cards">
+      <div class="card hue-files">
+        <h3>🦸 Comic SOP</h3><p>The 8-step project plan, Monday through Friday.</p>
+        <div class="filerow">
+          <a class="flink open" href="04 Superhero Comic Project/Comic SOP.html">🖥️ Open</a>
+          <a class="flink print" href="04 Superhero Comic Project/Comic SOP.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-files">
+        <h3>📝 Worksheet Pack</h3><p>5 fill-in sheets: Team Roster, Character Sheet, World-Building, Journey Planner, Page Planner.</p>
+        <div class="filerow">
+          <a class="flink open" href="04 Superhero Comic Project/Comic Worksheets.html">🖥️ Open</a>
+          <a class="flink print" href="04 Superhero Comic Project/Comic Worksheets.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-files">
+        <h3>🌀 Hero's Journey Wheel + Script</h3><p>The classic 12-step circle diagram, with a Moana example and your say/ask lines for every step.</p>
+        <div class="filerow">
+          <a class="flink open" href="04 Superhero Comic Project/Hero's Journey Wheel + Script.html">🖥️ Open</a>
+          <a class="flink print" href="04 Superhero Comic Project/Hero's Journey Wheel + Script.pdf">📄 PDF</a>
+        </div>
+      </div>
+      <div class="card hue-files">
+        <h3>🖥️ Comic Teaching Slides</h3><p>11 slides to launch the project with the class.</p>
+        <div class="filerow">
+          <a class="flink open" href="04 Superhero Comic Project/Comic Teaching Slides.html">🖥️ Open</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="ch5">
+    <div class="chead"><span class="num" style="--hue:var(--stage)">5</span><h2>Watch</h2></div>
+    <p class="csub">🟦 See it working before you teach it.</p>
+    <div class="cards">
+      <div class="card hue-stage">
+        <h3>🎬 Gameplay Demo</h3><p>12-second real recording: walking, jumping over an enemy, collecting all 3 reefs.</p>
+        <div class="filerow">
+          <a class="flink open" href="05 Watch/Gameplay Demo.mp4">▶️ Play video</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p>Built for the BGC Summer Camp 2026 Godot &amp; Superhero Comic track. Every colour on this page matches every printed sheet — 🟩 Parts · 🟦 Stage · 🟧 Settings · 🟪 Files · 🟨 GO.</p>
+  </div>
+</div>
+
+<script>
+  var root = document.documentElement;
+  var tBtn = document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) ? 'dark':'light'); }
+  try{ var st = localStorage.getItem('bgc-theme'); if(st) root.setAttribute('data-theme', st); }catch(e){}
+  tBtn.addEventListener('click', function(){
+    var nx = cur()==='dark' ? 'light':'dark';
+    root.setAttribute('data-theme', nx);
+    try{ localStorage.setItem('bgc-theme', nx); }catch(e){}
+  });
+</script>
 </body>
 </html>

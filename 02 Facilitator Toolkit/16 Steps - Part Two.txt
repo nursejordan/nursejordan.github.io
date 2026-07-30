@@ -1,0 +1,116 @@
+PART TWO
+
+- Adding platform scenes + collisions   (→ Recipe #11)
+  --> platforms are their own scene, just like Player — build ONE, reuse everywhere
+      (compare to a Broadway set piece: build the staircase once, roll it on stage wherever the scene needs it)
+  --> Add new scene > Other Node > StaticBody2D (rename it 'Platform')
+    1. Add Sprite2D as child --> drop platform art onto it
+    2. Add CollisionShape2D as child --> rectangle, drag until it hugs the art
+    3. Save to scenes folder *
+  --> drag Platform scene into the main level (same drag trick as adding the Player)
+  --> duplicate it (Ctrl/Cmd+D) and arrange platforms into a path worth jumping
+* same rule as always: new node or any change = save your scene *
+
+- Animating moving platforms with keyframes   (→ Recipe #12)
+  --> What is a keyframe? A snapshot of WHERE something is at one moment in time.
+      You place snapshot #1 and snapshot #2 — Godot draws all the in-between motion
+      (like a flipbook: you draw page 1 and page 10, Godot fills in pages 2–9)
+  --> Add AnimationPlayer node to the platform scene
+    1. New animation --> name it 'move'
+    2. Timeline at 0:00 --> click the key ◆ next to Position in the Inspector = first keyframe
+    3. Slide timeline to the end (~2 sec) --> drag platform to where it should end --> key ◆ again
+    4. Turn on looping + ping-pong mode (so it glides back and forth forever)
+    5. Hit "autoplay on load" — same button we used for the idle animation
+  -> playtest: the platform should move all by itself, no keys pressed
+
+- Key-binding player movement and jump animations   (→ Recipe #13)
+  --> right now movement uses Godot's built-in generic keys — we want OUR OWN controls
+  --> Project > Project Settings > Input Map
+    1. Type an action name ('left') > Add. Repeat for 'right' and 'jump'
+    2. Click the + next to each --> press the real key you want (A, D, Space) --> OK
+    3. In the player script, swap the built-in names for our action names
+** spelling matters: the script looks these names up letter-for-letter — all lowercase, no spaces **
+  -> Why make our own bindings? This is exactly how real games build their
+     "controls settings" menu — and it lets us add controller support later
+
+- Fix player animations with code   (→ Recipe #14)
+  --> the problem: she moonwalks! runs facing the wrong way, or keeps "running" in mid-air
+  --> the script decides EVERY frame: which animation plays + which way she faces
+    1. moving left? --> flip_h = true (mirror the sprite — no new art needed!)
+    2. on the floor + moving --> play "run"
+    3. on the floor + standing still --> play "idle"
+    4. in the air --> going UP plays "jump", coming DOWN plays "fall"
+       -> how does the code know up from down? velocity.y — negative = up (remember gravity, line 4!)
+  ** this is if/else logic — same thinking as: IF it's raining take an umbrella, ELSE take sunglasses **
+_________
+
+- Add restart zones with timers   (→ Recipe #15)
+  --> Ask the class: what happens when she falls off the map? (right now: falls forever!)
+  --> a restart zone is an invisible tripwire below the world
+    1. Add Area2D to the main level (rename 'RestartZone')
+    2. Add CollisionShape2D --> world boundary shape***, placed below the lowest platform
+    3. Connect the body_entered signal
+       -> What is a signal? The node raising its hand: "someone just touched me!"
+    4. In the script: reload the scene — the level restarts
+       -> this IS the gameplay loop: try, fail, restart, try again
+  --> optional: add a Timer node for a tiny delay, so the fall reads before the reset
+*** stretch it the full width of the level — cover every possible fall ***
+
+- Adding + coding coins   (→ Recipe #16)
+  --> coins are Area2D, NOT StaticBody2D — ask them why!
+      (answer: we want to DETECT a touch, not BLOCK movement — you run THROUGH a coin, not INTO it)
+  --> Add new scene > Area2D (rename 'Coin')
+    1. AnimatedSprite2D child --> spin animation --> autoplay on load
+    2. CollisionShape2D child --> circle shape
+    3. Connect body_entered --> in the script: if it's the Player, the coin deletes itself
+       -> "deleted" = collected! that's the whole trick
+  --> save the scene, then scatter coins in a trail that LEADS the player where you want them to go
+
+- Adding enemies + raycasting   (→ Recipe #17)
+  --> an enemy is an Area2D that moves ALL BY ITSELF — no keys. The script is its brain
+    1. New scene > Area2D ('Enemy') + AnimatedSprite2D + CollisionShape2D (same family as always)
+    2. Script: walk in one direction, flip direction at the edges
+  --> What is a raycast? An invisible laser-pointer "feeler." RayCast2D points down-and-ahead
+      asking "is there still floor in front of me?" — no floor = turn around
+      (that's how enemies patrol without walking off cliffs!)
+  --> enemy touches Player --> same restart trick from the restart zone (or lose a life)
+
+- Make enemy deaths visually look better   (→ Recipe #18)
+  --> stomping an enemy should FEEL good — game designers call this "juice"
+    1. Give the enemy's AnimatedSprite2D a separate 'death' animation (the squash!)
+    2. When stomped: FIRST stop its movement + collisions (a dying enemy can't hurt you), THEN play the animation
+    3. When the animation finishes --> the enemy removes itself
+    4. Extra juice: a tiny bounce for the player, a poof effect
+  -> compare for the class: instant disappear vs. squash-then-poof — which one FEELS fair?
+     feedback is how a game says "that worked!"
+-------------
+WORKING ON THEIR OWN GAMES
+
+- Add text instructions through labels   (→ Recipe #19)
+  --> a Label is a text node — but first add a CanvasLayer. Why?
+      it sticks text to the SCREEN, not the world
+      (like writing on the camera lens instead of the stage floor — it follows you everywhere)
+    1. CanvasLayer node ('HUD') > Label child
+    2. Type the instructions ("← → to move · SPACE to jump")
+    3. Font size + color live in the Inspector (theme overrides)
+  --> place instructions near the spawn point — first thing the player reads
+
+- Add sound effects   (→ Recipe #20)
+  --> AudioStreamPlayer2D on the player ('JumpSound'), another on the coin ('CoinSound')
+    1. Drag the sound file from the assets folder into the Stream slot
+    2. In code, play the sound EXACTLY where the action happens:
+       jump sound inside the jump if-statement, coin sound on pickup
+** keep volumes balanced — effects sit UNDER the music, they don't fight it **
+
+- Game manager / Scoring / End Game   (→ Recipe #21)
+  --> the Game Manager is the referee + scorekeeper: ONE node that owns score, lives, win/lose
+      (every object reports to it; it updates the scoreboard — like the stage manager of the show)
+    1. Add a plain Node to the main level ('GameManager') + script with:  var score = 0
+    2. Coins report in --> manager adds points --> updates the Label ("Score: " + str(score))
+       -> Why str()? score is a NUMBER, labels only speak TEXT — str() translates
+    3. Win condition: all coins collected? reached the flag? --> show the "You Win!" label
+    4. Lose condition: lives hit 0 --> "Game Over" + restart
+  -> tie it to slide 42: this IS "victory parameters" — ask each girl:
+     what does WINNING mean in YOUR game?
+
+(→ Recipe #N tags point to the matching recipe in the Game-Build SOP Book — delete them if you prefer the outline clean.)

@@ -1,0 +1,169 @@
+<title>Reef Runner — Facilitator Setup (Before Class)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --paper:#12201f; --card:#17292b; --ink:#e8f0ee; --ink-soft:#9fb3b1; --line:#294044; } }
+  :root[data-theme="dark"]{ --paper:#12201f; --card:#17292b; --ink:#e8f0ee; --ink-soft:#9fb3b1; --line:#294044; }
+  :root[data-theme="light"]{ --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.45; font-size:15px; }
+  .wrap{ max-width:920px; margin:0 auto; padding:20px 18px 50px; }
+  .head{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
+  h1{ font-family:var(--fd); font-size:1.55rem; margin:0; }
+  .sub{ color:var(--ink-soft); font-size:.88rem; margin:2px 0 0; }
+  .btnrow{ margin:12px 0 16px; display:flex; gap:8px; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:8px 15px; font-size:.82rem; cursor:pointer; }
+  .btn.ghost{ background:var(--card); color:var(--ink); border:1px solid var(--line); }
+
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .box{ background:var(--card); border:1px solid var(--line); border-top:5px solid var(--hue,var(--parts)); border-radius:12px; padding:14px 16px; break-inside:avoid; }
+  .box h2{ font-family:var(--fd); font-size:1.02rem; margin:0 0 8px; color:var(--hue,var(--ink)); }
+  .box .mins{ float:right; font-size:.72rem; color:var(--ink-soft); font-family:var(--fd); }
+
+  ul.chk{ list-style:none; margin:0; padding:0; }
+  ul.chk li{ display:flex; gap:9px; align-items:flex-start; padding:4px 0; font-size:.9rem; }
+  ul.chk input{ width:18px; height:18px; margin-top:2px; accent-color:var(--parts); cursor:pointer; flex:0 0 auto; }
+  ul.chk li b{ color:var(--ink); }
+  ul.chk li.done label{ text-decoration:line-through; color:var(--ink-soft); }
+  .k{ font-family:var(--fd); background:var(--paper); border:1px solid var(--line); border-radius:5px; padding:0 5px; font-size:.82rem; white-space:nowrap; }
+  .done-badge{ font-size:.72rem; font-family:var(--fd); font-weight:700; color:#fff; background:var(--parts); border-radius:999px; padding:1px 8px; margin-left:6px; }
+
+  ol.ordered{ margin:0; padding-left:1.15rem; }
+  ol.ordered li{ padding:3px 0; font-size:.9rem; }
+  .print-list li{ font-size:.88rem; padding:3px 0; }
+  .print-list b{ color:var(--parts); }
+
+  .hue-go{ --hue:var(--go); } .hue-parts{ --hue:var(--parts); } .hue-stage{ --hue:var(--stage); }
+  .hue-settings{ --hue:var(--settings); } .hue-files{ --hue:var(--files); }
+
+  .fix{ background:var(--settings-bg); border-radius:10px; padding:10px 13px; font-size:.84rem; margin-top:10px; }
+  .fix b{ color:var(--settings); }
+  .kit{ margin-top:16px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 15px; }
+  .kit h2{ font-family:var(--fd); font-size:1rem; margin:0 0 6px; }
+  .kit .row{ display:grid; grid-template-columns:auto 1fr; gap:8px 10px; font-size:.83rem; }
+  .kit .row div:nth-child(odd){ font-family:var(--fd); font-weight:700; color:var(--parts); }
+  .note{ margin-top:14px; text-align:center; font-size:.84rem; color:var(--ink-soft); }
+
+  @media print{
+    @page{ size:Letter portrait; margin:10mm; }
+    body{ background:#fff; font-size:11pt; }
+    .btnrow{ display:none; }
+    .box,.kit{ box-shadow:none; }
+  }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>🐠 Reef Runner — Facilitator Setup</h1>
+      <p class="sub">Everything to do before the girls arrive. ~15 min the first time, ~5 min after.</p>
+    </div>
+  </div>
+  <div class="btnrow">
+    <button class="btn" onclick="window.print()">🖨 Print</button>
+    <button class="btn ghost" id="themeBtn" type="button">◐ Theme</button>
+    <button class="btn ghost" id="resetBtn" type="button">↺ Reset checks</button>
+  </div>
+
+  <div class="cols">
+
+    <div class="box hue-go">
+      <span class="mins">once</span>
+      <h2>A · Set up the computers</h2>
+      <ul class="chk">
+        <li><input type="checkbox" id="a1"><label for="a1"><b>Godot 4.7.1 installed</b> in Applications <span class="done-badge">DONE</span></label></li>
+        <li><input type="checkbox" id="a2"><label for="a2">Unzip <b>ReefRunnerTemplate.zip</b> onto each computer (or a shared folder).</label></li>
+        <li><input type="checkbox" id="a3"><label for="a3">Open Godot → <b>Import</b> → pick the folder's <b>project.godot</b> → <b>Import &amp; Edit</b>.</label></li>
+        <li><input type="checkbox" id="a4"><label for="a4">Press <span class="k">F5</span> to test: she walks with arrows, jumps with Space. Then close.</label></li>
+      </ul>
+      <div class="fix"><b>If Godot won't open</b> (macOS warning): right-click the Godot app → <b>Open</b> → Open. Or System Settings → Privacy &amp; Security → <b>Open Anyway</b>. You only do this once.</div>
+    </div>
+
+    <div class="box hue-settings">
+      <span class="mins">once</span>
+      <h2>B · Print the handouts</h2>
+      <ul class="print-list" style="list-style:none;padding:0;margin:0">
+        <li>☐ <b>Cheat Sheet</b> — 1 per girl</li>
+        <li>☐ <b>Bookmarks</b> — 1 sheet per 4 girls, then cut</li>
+        <li>☐ <b>Coloring Page</b> — 1 per girl</li>
+        <li>☐ <b>Mod Challenge Cards</b> — 1 per girl (or per pair)</li>
+        <li>☐ <b>Facilitator Script</b> — 1 for you</li>
+        <li>☐ <b>Guide</b> — 1 for you (optional, per girl)</li>
+      </ul>
+      <p style="font-size:.8rem;color:var(--ink-soft);margin:8px 0 0">All print from the PDFs in your Drive folder or Desktop. Turn double-sided OFF for the bookmarks.</p>
+    </div>
+
+    <div class="box hue-parts">
+      <span class="mins">day-of</span>
+      <h2>C · Run the session (in order)</h2>
+      <ol class="ordered">
+        <li><b>Warm-up:</b> hand out the <b>coloring page</b> as they arrive.</li>
+        <li><b>Slides</b> on the projector — press <span class="k">F</span> for full screen.</li>
+        <li>Teach the <b>4-colour map</b> (slides 3–8). Go slow here.</li>
+        <li>Give out <b>cheat sheets + bookmarks</b>.</li>
+        <li>Either build the 7 steps together, <b>or</b> open the <b>template</b> and mod it.</li>
+        <li>Finishers get the <b>Mod Challenge cards</b>.</li>
+      </ol>
+    </div>
+
+    <div class="box hue-stage">
+      <span class="mins">remember</span>
+      <h2>D · Your job, in one line</h2>
+      <p style="font-size:.9rem;margin:.2rem 0 .5rem">You don't teach Godot — you <b>point at the 5 colours</b> and let the girls click.</p>
+      <ul class="chk">
+        <li><input type="checkbox" id="d1"><label for="d1">Keep the <b>facilitator script</b> next to you.</label></li>
+        <li><input type="checkbox" id="d2"><label for="d2">Do one step, let them do it, then move on.</label></li>
+        <li><input type="checkbox" id="d3"><label for="d3"><b>Stop and cheer the first jump.</b> 🎉</label></li>
+        <li><input type="checkbox" id="d4"><label for="d4">Bugs = normal. Use the "Help!" cards, stay calm.</label></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="kit">
+    <h2>📦 The whole kit — where each piece lives</h2>
+    <div class="row">
+      <div>Guide</div><div>full lesson + all the code (screen or print)</div>
+      <div>Slides</div><div>interactive deck to project · + editable PowerPoint</div>
+      <div>Cheat Sheet</div><div>1-page map + 7 steps for each girl</div>
+      <div>Bookmarks</div><div>colour key to tape by each laptop</div>
+      <div>Facilitator Script</div><div>what to say at each slide (for you)</div>
+      <div>Coloring Page</div><div>reef-hero warm-up</div>
+      <div>Template</div><div>ReefRunnerTemplate — a working game they mod</div>
+      <div>Mod Challenges</div><div>12 dares to try in the template</div>
+    </div>
+  </div>
+
+  <p class="note">Built for the BGC Summer Camp 2026 Godot track · the "save the reefs" platformer. You've got this. 🐠</p>
+</div>
+
+<script>
+  var root=document.documentElement;
+  var tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+
+  var boxes=document.querySelectorAll('ul.chk input[type=checkbox]');
+  boxes.forEach(function(b){
+    var key='rr-setup-'+b.id;
+    try{ if(localStorage.getItem(key)==='1'){ b.checked=true; b.closest('li').classList.add('done'); } }catch(e){}
+    b.addEventListener('change',function(){
+      b.closest('li').classList.toggle('done', b.checked);
+      try{ localStorage.setItem(key, b.checked?'1':'0'); }catch(e){}
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click',function(){
+    boxes.forEach(function(b){ b.checked=false; b.closest('li').classList.remove('done'); try{localStorage.removeItem('rr-setup-'+b.id);}catch(e){} });
+  });
+</script>

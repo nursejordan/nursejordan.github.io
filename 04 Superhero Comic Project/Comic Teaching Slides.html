@@ -1,0 +1,240 @@
+<title>Superhero Comic — Teaching Slides</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#fbfdfc;
+    --ink:#213039; --ink-soft:#4f626c; --line:#d4ded9;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#e0972a; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+    --shadow:0 2px 6px rgba(20,40,45,.07), 0 14px 40px rgba(20,40,45,.09);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#fbfdfc; --ink:#213039; --ink-soft:#4f626c; --line:#d4ded9;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#e0972a; --go-bg:#faeecd;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); overflow:hidden; }
+  .deck{ position:fixed; inset:0; }
+  .slide{ position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:6vh 7vw 12vh; opacity:0; transition:opacity .28s ease; }
+  .slide.active{ display:flex; opacity:1; }
+  @media (prefers-reduced-motion:reduce){ .slide{ transition:none; } }
+  .kicker{ font-family:var(--fd); text-transform:uppercase; letter-spacing:2px; font-weight:700; font-size:clamp(.7rem,1.5vw,.95rem); color:var(--settings); margin-bottom:2.2vh; }
+  h1{ font-family:var(--fd); font-size:clamp(2rem,6vw,4rem); line-height:1.1; margin:0; text-wrap:balance; }
+  h2{ font-family:var(--fd); font-size:clamp(1.5rem,4.4vw,2.8rem); line-height:1.15; margin:0; text-wrap:balance; }
+  .big{ font-size:clamp(1.1rem,2.7vw,1.7rem); line-height:1.5; color:var(--ink-soft); max-width:26ch; margin:2.4vh auto 0; }
+  .sub{ font-size:clamp(.95rem,2.1vw,1.3rem); color:var(--ink-soft); margin-top:1.5vh; max-width:38ch; }
+  .emoji{ font-size:clamp(3rem,8vw,5.4rem); line-height:1; margin-bottom:2vh; }
+
+  .cardgrid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.8vh 1.8vw; width:min(780px,88vw); margin-top:2.5vh; }
+  .kcard{ background:var(--card); border:1px solid var(--line); border-left:6px solid var(--kc,var(--settings)); border-radius:14px; padding:2vh 1.5vw; text-align:left; box-shadow:var(--shadow); }
+  .kcard b{ font-family:var(--fd); font-size:clamp(1rem,2.3vw,1.45rem); display:block; }
+  .kcard span{ font-size:clamp(.82rem,1.8vw,1.1rem); color:var(--ink-soft); }
+
+  .list{ text-align:left; display:flex; flex-direction:column; gap:1.3vh; width:min(660px,88vw); margin-top:2.5vh; }
+  .list div{ font-size:clamp(1rem,2.4vw,1.5rem); display:flex; gap:13px; align-items:flex-start; }
+  .list .b{ min-width:clamp(26px,4.6vw,38px); height:clamp(26px,4.6vw,38px); border-radius:10px; background:var(--settings); color:#fff; font-family:var(--fd); font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:clamp(.8rem,1.9vw,1.1rem); }
+
+  .jrow{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5vh 1.4vw; width:min(860px,90vw); margin-top:2.5vh; }
+  .jday{ background:var(--card); border:2.5px solid var(--jc); border-radius:16px; padding:1.8vh 1.2vw; text-align:left; }
+  .jday h3{ font-family:var(--fd); color:var(--jc); font-size:clamp(.85rem,1.9vw,1.15rem); margin:0 0 .8vh; }
+  .jday ol{ margin:0; padding-left:1.3rem; }
+  .jday li{ font-size:clamp(.74rem,1.6vw,1rem); margin:.5vh 0; }
+  @media (max-width:640px){ .jrow{ grid-template-columns:1fr; } .cardgrid{ grid-template-columns:1fr; } }
+
+  .win{ background:var(--settings-bg); color:var(--ink); border-radius:14px; padding:1.6vh 1.8vw; font-size:clamp(.95rem,2.2vw,1.35rem); max-width:34ch; margin-top:2.5vh; }
+  .win b{ color:var(--settings); }
+
+  .chrome{ position:fixed; top:14px; right:16px; display:flex; gap:8px; z-index:20; }
+  .chrome button{ font-family:var(--fd); font-weight:700; font-size:.8rem; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:7px 12px; cursor:pointer; }
+  .nav{ position:fixed; bottom:16px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:16px; z-index:20; }
+  .nav button{ font-family:var(--fd); font-size:1.3rem; line-height:1; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px; width:46px; height:46px; cursor:pointer; box-shadow:var(--shadow); }
+  .nav button:disabled{ opacity:.35; }
+  .counter{ font-family:var(--fd); font-weight:700; font-size:.95rem; color:var(--ink-soft); min-width:70px; text-align:center; font-variant-numeric:tabular-nums; }
+  .progress{ position:fixed; top:0; left:0; height:5px; background:var(--settings); width:0; transition:width .28s ease; z-index:30; }
+  .hint{ position:fixed; bottom:18px; right:18px; font-size:.72rem; color:var(--ink-soft); }
+  @media (max-width:640px){ .hint{ display:none; } }
+</style>
+
+<div class="progress" id="prog"></div>
+<div class="chrome">
+  <button id="themeBtn" type="button">◐ Theme</button>
+  <button id="fsBtn" type="button">⛶ Full screen</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <section class="slide active">
+    <div class="emoji">🦸🏾‍♀️💥</div>
+    <div class="kicker">Black Girls Code · Team Project</div>
+    <h1>The Superhero Comic</h1>
+    <p class="sub">Your team. Your heroes. Your story — published by Friday.</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">The mission</div>
+    <h2>By Friday, your team will publish…</h2>
+    <p class="big">a real comic where the heroes' powers are <b style="color:var(--settings)">YOUR real strengths</b> — and the villain is a <b style="color:var(--files)">stereotype you smash</b>.</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Step 1</div>
+    <h2>Teams of 3–4 · everyone leads something</h2>
+    <div class="cardgrid">
+      <div class="kcard" style="--kc:var(--settings)"><b>✍️ Story Lead</b><span>script &amp; dialogue</span></div>
+      <div class="kcard" style="--kc:var(--parts)"><b>🎨 Art Director</b><span>style &amp; characters</span></div>
+      <div class="kcard" style="--kc:var(--stage)"><b>🖥️ Canva Lead</b><span>layout &amp; assembly</span></div>
+      <div class="kcard" style="--kc:var(--files)"><b>📚 Lore Keeper</b><span>world rules &amp; continuity</span></div>
+    </div>
+    <div class="win"><b>Everyone</b> draws AND writes. A role means you <b>lead</b> that part.</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Step 2 · the secret rule</div>
+    <h2>Real superpowers → comic superpowers</h2>
+    <div class="list">
+      <div><span class="b">💗</span><span><b>Empathy</b> → she feels what others feel, from miles away</span></div>
+      <div><span class="b">📋</span><span><b>Organization</b> → she can freeze chaos into perfect order</span></div>
+      <div><span class="b">😂</span><span><b>Humor</b> → her jokes literally disarm villains</span></div>
+      <div><span class="b">🧩</span><span><b>Problem-solving</b> → she sees the hidden path in any trap</span></div>
+    </div>
+    <p class="sub">Fill in your <b>Character Sheet</b>: name, power, look, weakness, catchphrase.</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Step 3</div>
+    <h2>Build a world with RULES</h2>
+    <div class="list">
+      <div><span class="b">1</span><span>Name the world + the setting</span></div>
+      <div><span class="b">2</span><span>Write <b>3 rules</b> — what's possible, what's forbidden</span></div>
+      <div><span class="b">3</span><span>Invent the villain = a real-world <b>stereotype in disguise</b></span></div>
+    </div>
+    <div class="win"><b>Rules make it real.</b> A world where anything goes is a world nobody believes.</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">The map of every great story</div>
+    <h2>The Hero's Journey — 12 steps</h2>
+    <div class="jrow">
+      <div class="jday" style="--jc:var(--parts)"><h3>MON · 1–4 · Setup</h3><ol>
+        <li>Ordinary World</li><li>Call to Adventure</li><li>Refusal of the Call</li><li>Meeting the Mentor</li></ol></div>
+      <div class="jday" style="--jc:var(--stage)"><h3>TUE · 5–8 · Adventure</h3><ol start="5">
+        <li>Crossing the Threshold</li><li>Tests, Allies &amp; Enemies</li><li>Approach the Inmost Cave</li><li>The Ordeal</li></ol></div>
+      <div class="jday" style="--jc:var(--files)"><h3>WED · 9–12 · Victory</h3><ol start="9">
+        <li>Reward</li><li>The Road Back</li><li>Resurrection</li><li>Return with the Elixir</li></ol></div>
+    </div>
+    <p class="sub">Star Wars, Moana, Spider-Man — same 12 steps. Now it's yours.</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Writing tip</div>
+    <h2>Show, don't tell</h2>
+    <div class="list">
+      <div><span class="b" style="background:var(--line);color:var(--ink-soft)">✗</span><span style="color:var(--ink-soft)">"She was brave."</span></div>
+      <div><span class="b" style="background:var(--parts)">✓</span><span>Draw her <b>stepping forward</b> while everyone else backs away.</span></div>
+    </div>
+    <div class="win">Checkpoint: point to one panel where a <b>real superpower makes the choice</b>.</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">The climax</div>
+    <h2>Defeat the stereotype</h2>
+    <div class="list">
+      <div><span class="b">8</span><span><b>The Ordeal:</b> the team wins only by <b>combining</b> their different powers</span></div>
+      <div><span class="b">11</span><span><b>Resurrection:</b> the villain's lie is disproven — on the page</span></div>
+      <div><span class="b">12</span><span><b>The Elixir:</b> the heroes come home and lift their community</span></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Building it</div>
+    <h2>Paper first, Canva second</h2>
+    <div class="list">
+      <div><span class="b">1</span><span>Sketch each page on a <b>Page Planner</b> — stick figures are perfect</span></div>
+      <div><span class="b">2</span><span>Canva → Templates → search <b>"comic book template"</b> → pick a FREE one</span></div>
+      <div><span class="b">3</span><span>Rebuild your sketch: panels, art, speech bubbles (Elements → "speech bubble")</span></div>
+      <div><span class="b">4</span><span><b>Share</b> the design with your whole team + facilitator</span></div>
+    </div>
+    <div class="win"><b>⚠️ Watch for the crown icon</b> — that means paid. Free only! · Max <b>2 fonts</b> for the whole comic.</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Finish line</div>
+    <h2>Polish → Publish → Present</h2>
+    <div class="list">
+      <div><span class="b">✓</span><span><b>Read it out loud</b> as a team — fix what's confusing</span></div>
+      <div><span class="b">✓</span><span>All <b>12 steps</b> visible in the pages?</span></div>
+      <div><span class="b">✓</span><span>Share → <b>Download as PDF</b> + copy the view link</span></div>
+      <div><span class="b">✓</span><span>Friday: every teammate introduces <b>HER hero</b> — 60 seconds each</span></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="emoji">📚✨</div>
+    <h1>You're published authors now.</h1>
+    <p class="sub">Real heroes. Real powers. Your story.</p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" type="button" aria-label="Previous slide">‹</button>
+  <span class="counter" id="counter">1 / 11</span>
+  <button id="next" type="button" aria-label="Next slide">›</button>
+</div>
+<div class="hint">← → to move · F for full screen</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i=0, n=slides.length;
+  var counter=document.getElementById('counter'), prog=document.getElementById('prog');
+  var prev=document.getElementById('prev'), next=document.getElementById('next');
+  function show(idx){
+    i=Math.max(0,Math.min(n-1,idx));
+    slides.forEach(function(s,k){ s.classList.toggle('active',k===i); });
+    counter.textContent=(i+1)+' / '+n;
+    prog.style.width=((i)/(n-1)*100)+'%';
+    prev.disabled=(i===0); next.disabled=(i===n-1);
+  }
+  function go(d){ show(i+d); }
+  prev.addEventListener('click',function(){go(-1);});
+  next.addEventListener('click',function(){go(1);});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); go(1); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); go(-1); }
+    else if(e.key==='Home'){ show(0); } else if(e.key==='End'){ show(n-1); }
+    else if(e.key.toLowerCase()==='f'){ toggleFs(); }
+  });
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(e.clientX > window.innerWidth*0.5){ go(1); } else { go(-1); }
+  });
+  function toggleFs(){
+    if(!document.fullscreenElement){ (document.documentElement.requestFullscreen||function(){})(); }
+    else if(document.exitFullscreen){ document.exitFullscreen(); }
+  }
+  document.getElementById('fsBtn').addEventListener('click',toggleFs);
+  var tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+  show(0);
+})();
+</script>

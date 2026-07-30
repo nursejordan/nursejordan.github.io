@@ -1,0 +1,422 @@
+<title>Reef Runner — Godot Teaching Slides</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#fbfdfc;
+    --ink:#213039; --ink-soft:#4f626c; --line:#d4ded9;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#e0972a; --go-bg:#faeecd;
+    --font-display:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --font-body:Verdana,Geneva,system-ui,sans-serif;
+    --font-code:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --shadow:0 2px 6px rgba(20,40,45,.07), 0 14px 40px rgba(20,40,45,.09);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --paper-2:#132427; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --paper-2:#e4ebe7; --card:#fbfdfc; --ink:#213039; --ink-soft:#4f626c; --line:#d4ded9;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#e0972a; --go-bg:#faeecd;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body);
+    overflow:hidden;
+  }
+  .deck{ position:fixed; inset:0; }
+
+  .slide{
+    position:absolute; inset:0; display:none;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:6vh 7vw 12vh;
+    opacity:0; transition:opacity .28s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+  @media (prefers-reduced-motion:reduce){ .slide{ transition:none; } }
+
+  .kicker{
+    font-family:var(--font-display); text-transform:uppercase; letter-spacing:2px;
+    font-weight:700; font-size:clamp(.7rem,1.5vw,.95rem); color:var(--parts); margin-bottom:2.2vh;
+  }
+  h1{ font-family:var(--font-display); font-size:clamp(2rem,6.2vw,4.2rem); line-height:1.08; margin:0; text-wrap:balance; letter-spacing:.3px; }
+  h2{ font-family:var(--font-display); font-size:clamp(1.6rem,4.6vw,3rem); line-height:1.12; margin:0; text-wrap:balance; }
+  .big{ font-size:clamp(1.15rem,2.8vw,1.8rem); line-height:1.5; color:var(--ink-soft); max-width:24ch; margin:2.6vh auto 0; }
+  .sub{ font-size:clamp(1rem,2.2vw,1.35rem); color:var(--ink-soft); margin-top:1.6vh; max-width:34ch; }
+  .emoji{ font-size:clamp(3rem,9vw,6rem); line-height:1; margin-bottom:2vh; }
+
+  /* colour-area highlight slides */
+  .areacard{
+    display:flex; flex-direction:column; align-items:center; gap:1.4vh;
+    background:var(--card); border:3px solid var(--hl,var(--parts));
+    border-radius:24px; padding:5vh 6vw; box-shadow:var(--shadow); max-width:min(720px,86vw);
+  }
+  .areacard .dot{ width:clamp(48px,9vw,84px); height:clamp(48px,9vw,84px); border-radius:20px; background:var(--hl,var(--parts)); }
+  .areacard h2{ color:var(--ink); }
+  .areacard p{ font-size:clamp(1.05rem,2.5vw,1.55rem); color:var(--ink-soft); margin:0; max-width:22ch; }
+
+  /* the 4-area map */
+  .map{
+    display:grid; gap:1vh; width:min(760px,86vw);
+    grid-template-columns:1fr 1.7fr 1.2fr;
+    grid-template-areas:"bar bar bar" "sc st in" "fi st in";
+    background:var(--paper-2); border:1px solid var(--line); border-radius:20px; padding:1.2vh;
+    box-shadow:var(--shadow);
+  }
+  .map .r{ border-radius:14px; border:3px solid; background:var(--card); padding:1.6vh 1.4vw; font-family:var(--font-display); font-weight:700; font-size:clamp(.85rem,1.9vw,1.25rem); display:flex; align-items:center; justify-content:center; text-align:center; }
+  .map .bar{ grid-area:bar; border-color:var(--go); background:var(--go-bg); color:var(--go); }
+  .map .sc{ grid-area:sc; border-color:var(--parts); background:var(--parts-bg); color:var(--parts); min-height:9vh; }
+  .map .st{ grid-area:st; border-color:var(--stage); background:var(--stage-bg); color:var(--stage); }
+  .map .in{ grid-area:in; border-color:var(--settings); background:var(--settings-bg); color:var(--settings); }
+  .map .fi{ grid-area:fi; border-color:var(--files); background:var(--files-bg); color:var(--files); min-height:9vh; }
+
+  /* word grid */
+  .words{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:2vh 2.4vw; width:min(760px,86vw); }
+  .word{ background:var(--card); border:1px solid var(--line); border-left:6px solid var(--wc,var(--parts)); border-radius:16px; padding:2.4vh 1.6vw; text-align:left; box-shadow:var(--shadow); }
+  .word b{ font-family:var(--font-display); font-size:clamp(1.1rem,2.6vw,1.7rem); display:block; }
+  .word span{ font-size:clamp(.9rem,2vw,1.2rem); color:var(--ink-soft); }
+
+  /* checklist */
+  .checklist{ text-align:left; display:flex; flex-direction:column; gap:1.4vh; width:min(620px,86vw); }
+  .checklist div{ font-size:clamp(1.05rem,2.6vw,1.6rem); display:flex; gap:14px; align-items:center; }
+  .checklist .b{ width:clamp(26px,5vw,40px); height:clamp(26px,5vw,40px); border-radius:10px; background:var(--parts); color:#fff; font-family:var(--font-display); font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+
+  /* step slide layout */
+  .stepwrap{ display:flex; flex-direction:column; align-items:center; gap:2.4vh; width:min(820px,88vw); }
+  .dolist{ text-align:left; font-size:clamp(1.05rem,2.6vw,1.6rem); line-height:1.5; max-width:26ch; }
+  .dolist li{ margin:1.2vh 0; }
+  .whereat{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; text-transform:uppercase; letter-spacing:.5px; font-size:clamp(.72rem,1.6vw,1rem); border-radius:999px; padding:6px 16px; }
+  .whereat .sw{ width:14px; height:14px; border-radius:4px; }
+  .code{ font-family:var(--font-code); font-size:clamp(.8rem,1.9vw,1.15rem); background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.6vh 1.4vw; text-align:left; color:var(--ink); box-shadow:var(--shadow); }
+  .code .c{ color:var(--parts); }
+  .win{ background:var(--parts-bg); color:var(--ink); border-radius:14px; padding:1.6vh 1.6vw; font-size:clamp(1rem,2.3vw,1.4rem); max-width:30ch; }
+  .win b{ color:var(--parts); }
+
+  /* chrome */
+  .chrome{ position:fixed; top:14px; right:16px; display:flex; gap:8px; z-index:20; }
+  .chrome button{ font-family:var(--font-display); font-weight:700; font-size:.8rem; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:7px 12px; cursor:pointer; }
+  .chrome button:hover{ border-color:var(--ink-soft); }
+  .chrome button:focus-visible{ outline:3px solid var(--stage); outline-offset:2px; }
+
+  .nav{ position:fixed; bottom:16px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:16px; z-index:20; }
+  .nav button{ font-family:var(--font-display); font-size:1.3rem; line-height:1; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px; width:46px; height:46px; cursor:pointer; box-shadow:var(--shadow); }
+  .nav button:hover{ border-color:var(--parts); color:var(--parts); }
+  .nav button:disabled{ opacity:.35; cursor:default; }
+  .counter{ font-family:var(--font-display); font-weight:700; font-size:.95rem; color:var(--ink-soft); min-width:70px; text-align:center; font-variant-numeric:tabular-nums; }
+
+  .progress{ position:fixed; top:0; left:0; height:5px; background:var(--parts); width:0; transition:width .28s ease; z-index:30; }
+
+  .hint{ position:fixed; bottom:18px; right:18px; font-size:.72rem; color:var(--ink-soft); z-index:15; }
+  @media (max-width:640px){ .hint{ display:none; } .words{ grid-template-columns:1fr; } }
+</style>
+
+<div class="progress" id="prog"></div>
+
+<div class="chrome">
+  <button id="themeBtn" type="button">◐ Theme</button>
+  <button id="fsBtn" type="button">⛶ Full screen</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active">
+    <div class="emoji">🐠</div>
+    <div class="kicker">Black Girls Code · Godot</div>
+    <h1>Make Your First<br>Godot Game</h1>
+    <p class="sub">Reef&nbsp;Runner — a game where YOU built the hero.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide">
+    <div class="kicker">Today's win</div>
+    <h2>By the end of today…</h2>
+    <p class="big">a character <b style="color:var(--parts)">you make</b> will <b style="color:var(--stage)">walk</b> and <b style="color:var(--go)">jump</b> when you press the keys.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide">
+    <div class="kicker">The secret</div>
+    <h2>Godot is just 4 areas</h2>
+    <p class="sub">They never move. Learn the 4 colours and you know Godot.</p>
+    <div class="map" style="margin-top:3vh" aria-label="Godot screen map">
+      <div class="r bar">▲ Menus &amp; the ▶ GO button</div>
+      <div class="r sc">Parts list</div>
+      <div class="r st">Stage<br>(see your game)</div>
+      <div class="r in">Settings</div>
+      <div class="r fi">Files</div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide">
+    <div class="kicker">Area 1 of 4</div>
+    <div class="areacard" style="--hl:var(--parts)">
+      <div class="dot"></div>
+      <h2>Parts list</h2>
+      <p>Every piece of your game — player, ground, coin — stacked like Lego. <b>Top-left.</b></p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide">
+    <div class="kicker">Area 2 of 4</div>
+    <div class="areacard" style="--hl:var(--stage)">
+      <div class="dot"></div>
+      <h2>Stage</h2>
+      <p>The big middle window where you SEE your game and drag things around.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide">
+    <div class="kicker">Area 3 of 4</div>
+    <div class="areacard" style="--hl:var(--settings)">
+      <div class="dot"></div>
+      <h2>Settings</h2>
+      <p>Click any piece and its knobs — size, speed, picture — show up here. <b>Right side.</b></p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide">
+    <div class="kicker">Area 4 of 4</div>
+    <div class="areacard" style="--hl:var(--files)">
+      <div class="dot"></div>
+      <h2>Files</h2>
+      <p>Your stuff box — every picture and sound lives here. <b>Bottom-left.</b></p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide">
+    <div class="kicker">And one button</div>
+    <div class="areacard" style="--hl:var(--go)">
+      <div class="dot" style="display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.4rem">▶</div>
+      <h2>GO / Play</h2>
+      <p>Top-right. Press it to play your game for real.</p>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide">
+    <div class="kicker">4 words you'll hear</div>
+    <h2 style="margin-bottom:3vh">That's the whole vocabulary</h2>
+    <div class="words">
+      <div class="word" style="--wc:var(--parts)"><b>Node</b><span>one Lego brick — a picture, a sound, a shape.</span></div>
+      <div class="word" style="--wc:var(--stage)"><b>Scene</b><span>bricks clicked together into one thing (your Player).</span></div>
+      <div class="word" style="--wc:var(--settings)"><b>Inspector</b><span>the settings panel — the knobs.</span></div>
+      <div class="word" style="--wc:var(--go)"><b>Script</b><span>a page of instructions — the brain.</span></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide">
+    <div class="kicker">Now we build</div>
+    <h2 style="margin-bottom:3vh">7 small steps</h2>
+    <div class="checklist">
+      <div><span class="b">1</span> Open Godot</div>
+      <div><span class="b">2</span> Make the character</div>
+      <div><span class="b">3</span> Picture + bump-shape</div>
+      <div><span class="b">4</span> Teach the keys</div>
+      <div><span class="b">5</span> Give her a brain</div>
+      <div><span class="b">6</span> Add the ground</div>
+      <div><span class="b">7</span> Press GO 🎉</div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide">
+    <div class="kicker">Step 1 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--go-bg);color:var(--go)"><span class="sw" style="background:var(--go)"></span>Top bar</span>
+      <h2>Open Godot</h2>
+      <ul class="dolist">
+        <li><b>From scratch:</b> click <b>+ New Project</b> → name it → <b>Create &amp; Edit</b>.</li>
+        <li><b>Camp gave you one:</b> click <b>Import</b> → open its <b>project.godot</b> → <b>Import &amp; Edit</b>.</li>
+      </ul>
+      <div class="win"><b>Look for:</b> the 4 colour areas appear. You're home.</div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="slide">
+    <div class="kicker">Step 2 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--parts-bg);color:var(--parts)"><span class="sw" style="background:var(--parts)"></span>Parts list</span>
+      <h2>Make the character</h2>
+      <ul class="dolist">
+        <li>Add node → search <b>CharacterBody2D</b> → Create.</li>
+        <li>Rename it <b>Player</b>.</li>
+      </ul>
+      <div class="win"><b>Why:</b> this is the body a player controls that bumps into walls &amp; floors.</div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="slide">
+    <div class="kicker">Step 3 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--parts-bg);color:var(--parts)"><span class="sw" style="background:var(--parts)"></span>Parts list + <span class="sw" style="background:var(--settings)"></span> Settings</span>
+      <h2>Picture + bump-shape</h2>
+      <ul class="dolist">
+        <li>Right-click Player → Add Child → <b>Sprite2D</b> = her picture. (No art? use <b>icon.svg</b>.)</li>
+        <li>Add Child → <b>CollisionShape2D</b> = her bump-shape. Give it a <b>Rectangle</b>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="slide">
+    <div class="kicker">Step 4 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--go-bg);color:var(--go)"><span class="sw" style="background:var(--go)"></span>Top bar</span>
+      <h2>Teach Godot the keys</h2>
+      <ul class="dolist">
+        <li><b>Project → Project Settings → Input Map</b>.</li>
+        <li>Add 3 actions, spelled exactly:<br><b style="color:var(--parts)">move_left · move_right · jump</b></li>
+        <li>Give each a key: ← → and Space.</li>
+      </ul>
+      <div class="win"><b>Spelling matters!</b> lowercase, with the underscore.</div>
+    </div>
+  </section>
+
+  <!-- 15 -->
+  <section class="slide">
+    <div class="kicker">Step 5 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--parts-bg);color:var(--parts)"><span class="sw" style="background:var(--parts)"></span>Parts list → Script</span>
+      <h2>Give her a brain</h2>
+      <p class="sub" style="margin:0">Right-click Player → <b>Attach Script</b>. In plain words, every moment it says:</p>
+      <div class="code">
+<span class="c"># fall if not on the ground</span><br>
+<span class="c"># slide left/right with the arrows</span><br>
+<span class="c"># jump if Space + on the ground</span><br>
+<span class="c"># flip to face the way she walks</span><br>
+move_and_slide()
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 -->
+  <section class="slide">
+    <div class="kicker">Step 6 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--parts-bg);color:var(--parts)"><span class="sw" style="background:var(--parts)"></span>Parts list</span>
+      <h2>Give her ground</h2>
+      <ul class="dolist">
+        <li>New scene → <b>Node2D</b>, name it <b>Level</b>.</li>
+        <li>Add a <b>StaticBody2D</b> + <b>CollisionShape2D</b> = the floor.</li>
+        <li>Drag <b>Player</b> in, above the floor.</li>
+      </ul>
+      <div class="win"><b>Why:</b> without a floor, she falls forever!</div>
+    </div>
+  </section>
+
+  <!-- 17 -->
+  <section class="slide">
+    <div class="kicker">Step 7 of 7</div>
+    <div class="stepwrap">
+      <span class="whereat" style="background:var(--go-bg);color:var(--go)"><span class="sw" style="background:var(--go)"></span>GO</span>
+      <h2 style="color:var(--go)">Press ▶ and play!</h2>
+      <ul class="dolist">
+        <li>Press <b>▶ Play</b> (or F5). Pick <b>Level</b> as the main scene.</li>
+        <li>Arrows to walk. <b>Space to jump.</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 18 -->
+  <section class="slide">
+    <div class="kicker">Totally normal</div>
+    <h2>When it breaks — that's game-making</h2>
+    <div class="checklist" style="margin-top:2.5vh;gap:2vh">
+      <div><span class="b" style="background:var(--settings)">A</span> Falls through floor? → both need a <b>bump-shape</b>.</div>
+      <div><span class="b" style="background:var(--settings)">B</span> Won't move? → check the key <b>spelling</b>.</div>
+      <div><span class="b" style="background:var(--settings)">C</span> Flies away? → <b>jump_force</b> must be negative.</div>
+    </div>
+  </section>
+
+  <!-- 19 -->
+  <section class="slide">
+    <div class="kicker">You did it 🎉</div>
+    <h2>The rest is the same moves</h2>
+    <p class="big">Coins, enemies, score, "save the reefs" — all just: <b style="color:var(--parts)">add a piece</b>, <b style="color:var(--settings)">give it a brain</b>, <b style="color:var(--go)">press GO</b>.</p>
+  </section>
+
+  <!-- 20 -->
+  <section class="slide">
+    <div class="emoji">🐠🎮</div>
+    <h1>You're a game maker now.</h1>
+    <p class="sub">Go build the reef.</p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" type="button" aria-label="Previous slide">‹</button>
+  <span class="counter" id="counter">1 / 20</span>
+  <button id="next" type="button" aria-label="Next slide">›</button>
+</div>
+<div class="hint">← → to move · F for full screen</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i=0, n=slides.length;
+  var counter=document.getElementById('counter');
+  var prog=document.getElementById('prog');
+  var prev=document.getElementById('prev'), next=document.getElementById('next');
+
+  function show(idx){
+    i=Math.max(0,Math.min(n-1,idx));
+    slides.forEach(function(s,k){ s.classList.toggle('active',k===i); });
+    counter.textContent=(i+1)+' / '+n;
+    prog.style.width=((i)/(n-1)*100)+'%';
+    prev.disabled=(i===0); next.disabled=(i===n-1);
+  }
+  function go(d){ show(i+d); }
+
+  prev.addEventListener('click',function(){go(-1);});
+  next.addEventListener('click',function(){go(1);});
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); go(1); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); go(-1); }
+    else if(e.key==='Home'){ show(0); }
+    else if(e.key==='End'){ show(n-1); }
+    else if(e.key.toLowerCase()==='f'){ toggleFs(); }
+  });
+
+  // tap right half = next, left half = prev
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(e.clientX > window.innerWidth*0.5){ go(1); } else { go(-1); }
+  });
+
+  function toggleFs(){
+    if(!document.fullscreenElement){ (document.documentElement.requestFullscreen||function(){})(); }
+    else if(document.exitFullscreen){ document.exitFullscreen(); }
+  }
+  document.getElementById('fsBtn').addEventListener('click',toggleFs);
+
+  var tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+
+  show(0);
+})();
+</script>

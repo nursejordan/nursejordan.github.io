@@ -1,0 +1,207 @@
+<title>SOP — The Team Superhero Comic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f1c1e; --card:#16292c; --ink:#e8f0ee; --ink-soft:#a7bcbb; --line:#294044;
+    --stage:#5aa6e0; --stage-bg:#173040; --parts:#37bfae; --parts-bg:#123531;
+    --files:#a78be6; --files-bg:#241d3a; --settings:#f18a74; --settings-bg:#3a231e; --go:#f0b451; --go-bg:#3a2e12;
+  }
+  :root[data-theme="light"]{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8; --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6; --settings:#e56a53; --settings-bg:#fbe6e0; --go:#c9821f; --go-bg:#faeecd;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.6; font-size:15.5px; }
+  .wrap{ max-width:880px; margin:0 auto; padding:26px 20px 70px; }
+  h1{ font-family:var(--fd); font-size:clamp(1.5rem,4vw,2.1rem); margin:0 0 6px; line-height:1.2; }
+  .sub{ color:var(--ink-soft); font-size:.93rem; margin:0; max-width:64ch; }
+  a{ color:var(--stage); }
+  .btnrow{ margin:14px 0 18px; display:flex; gap:8px; flex-wrap:wrap; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--settings); color:#fff; border:0; border-radius:999px; padding:9px 17px; font-size:.85rem; cursor:pointer; }
+  .btn.ghost{ background:var(--card); color:var(--ink); border:1px solid var(--line); }
+
+  .goal{ background:var(--settings-bg); border-left:6px solid var(--settings); border-radius:12px; padding:13px 17px; margin-bottom:16px; font-size:.92rem; }
+  .goal b{ font-family:var(--fd); color:var(--settings); }
+
+  .step{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:13px 0; }
+  .step .top{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .step .n{ font-family:var(--fd); font-weight:700; color:#fff; background:var(--settings); width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex:0 0 auto; }
+  .step h3{ font-family:var(--fd); font-size:1.1rem; margin:0; }
+  .day{ margin-left:auto; font-family:var(--fd); font-weight:700; font-size:.68rem; text-transform:uppercase; letter-spacing:.5px; border-radius:999px; padding:3px 11px; white-space:nowrap; }
+  .d-mon{ background:var(--parts-bg); color:var(--parts); }
+  .d-tue{ background:var(--stage-bg); color:var(--stage); }
+  .d-wed{ background:var(--files-bg); color:var(--files); }
+  .d-thu{ background:var(--settings-bg); color:var(--settings); }
+  .d-fri{ background:var(--go-bg); color:var(--go); }
+  .step ol,.step ul{ margin:.35rem 0 0; padding-left:1.25rem; }
+  .step li{ margin:.3rem 0; font-size:.9rem; max-width:64ch; }
+  .step li b, .step p b{ color:var(--ink); }
+  .say{ font-size:.84rem; color:var(--ink-soft); border-left:3px solid var(--settings); padding-left:11px; margin:.6rem 0 0; max-width:62ch; }
+  .sheet-tag{ display:inline-block; font-family:var(--fd); font-weight:700; font-size:.72rem; background:var(--go-bg); color:var(--go); border-radius:999px; padding:2px 10px; margin:6px 4px 0 0; }
+  .ts{ font-family:var(--fd); font-weight:700; font-size:.72rem; background:var(--stage-bg); color:var(--stage); border-radius:999px; padding:2px 10px; text-decoration:none; white-space:nowrap; }
+
+  .journey{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:8px; margin-top:8px; }
+  .jcol{ border:2px solid var(--hue); background:var(--card); border-radius:12px; padding:10px 13px; }
+  .jcol h5{ font-family:var(--fd); margin:0 0 4px; font-size:.8rem; color:var(--hue); text-transform:uppercase; letter-spacing:.5px; }
+  .jcol ol{ margin:0; padding-left:1.2rem; }
+  .jcol li{ font-size:.82rem; margin:.2rem 0; }
+  .jcol li b{ font-family:var(--fd); }
+
+  .cau{ background:var(--settings-bg); border-radius:10px; padding:10px 14px; margin-top:10px; font-size:.85rem; }
+  .cau b{ color:var(--settings); font-family:var(--fd); }
+  .cau ul{ margin:.3rem 0 0; padding-left:1.15rem; }
+
+  .foot{ margin-top:26px; padding-top:12px; border-top:1px solid var(--line); font-size:.78rem; color:var(--ink-soft); }
+  @media print{
+    @page{ size:Letter portrait; margin:11mm; }
+    body{ background:#fff; font-size:10.5pt; }
+    .btnrow{ display:none; }
+    .step,.goal{ break-inside:avoid; }
+    a{ color:inherit; }
+  }
+</style>
+
+<div class="wrap">
+  <h1>🦸🏾‍♀️ SOP — The Team Superhero Comic</h1>
+  <p class="sub">In groups of 3–4: write, design &amp; publish a superhero comic with real world-building — where every hero's power is a <b>real leadership superpower</b> from your team. Eight steps across the week.</p>
+  <div class="btnrow">
+    <button class="btn" onclick="window.print()">🖨 Print</button>
+    <button class="btn ghost" id="themeBtn" type="button">◐ Theme</button>
+  </div>
+
+  <div class="goal"><b>The deliverable:</b> a published Canva comic (6–10 pages) that follows the <b>12-step Hero's Journey</b>, stars heroes powered by your team's real strengths, and <b>defeats a real-world stereotype</b> in its climax. Presented at Friday's showcase.</div>
+
+  <!-- 1 -->
+  <div class="step">
+    <div class="top"><span class="n">1</span><h3>Form your team &amp; pick roles</h3><span class="day d-mon">Mon · Lab 1</span></div>
+    <ol>
+      <li>Groups of <b>3–4</b>. Everyone draws AND writes — roles just mean you <i>lead</i> that part.</li>
+      <li>Pick one lead each: <b>Story Lead</b> (script &amp; dialogue) · <b>Art Director</b> (style &amp; characters) · <b>Canva Lead</b> (layout &amp; assembly) · <b>Lore Keeper</b> (world rules &amp; continuity — in a team of 3, Story Lead takes this).</li>
+      <li>Fill in the <b>Team Roster sheet</b> — team name included!</li>
+    </ol>
+    <span class="sheet-tag">📄 Sheet 1 · Team Roster</span>
+    <p class="say">These are Friday's career cards in miniature: Creative Director, Technical Artist, Project Manager. Say that out loud — it lands.</p>
+  </div>
+
+  <!-- 2 -->
+  <div class="step">
+    <div class="top"><span class="n">2</span><h3>Turn real superpowers into heroes</h3><span class="day d-mon">Mon · Lab 1</span></div>
+    <ol>
+      <li>From this morning's workshop: each girl names her <b>real-life superpower</b> (empathy, organization, humor, problem-solving, art…).</li>
+      <li>Each girl builds her hero on a <b>Character Sheet</b>: hero name, the real strength → comic power, costume/look, a <b>weakness</b> (heroes need one!), and a catchphrase.</li>
+      <li>Optional: use <b>Google Gemini</b> to brainstorm names and lore — the ideas stay yours.</li>
+    </ol>
+    <span class="sheet-tag">📄 Sheet 2 · Character Sheet (one per girl)</span>
+    <p class="say"><b>The rule that makes it work:</b> the comic power must be the real strength in disguise. Empathy → feels what others feel from miles away. Organization → can freeze chaos into order.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="step">
+    <div class="top"><span class="n">3</span><h3>Build the world</h3><span class="day d-mon">Mon · Lab 1</span></div>
+    <ol>
+      <li>As a team, fill the <b>World-Building sheet</b>: world name, the setting (city? reef? space school?), and <b>3 rules of the world</b> (what's possible here? what's forbidden?).</li>
+      <li>Invent the villain — and here's the twist: the villain embodies a <b>real-world stereotype</b> your team wants to smash ("girls can't code," "leaders must be loud"…).</li>
+      <li>Watch: <a href="https://www.youtube.com/watch?v=Hhk4N9A0oCA&t=1s">What is the Hero's Journey?</a></li>
+    </ol>
+    <span class="sheet-tag">📄 Sheet 3 · World-Building</span>
+  </div>
+
+  <!-- 4 -->
+  <div class="step">
+    <div class="top"><span class="n">4</span><h3>Map the journey — steps 1–4</h3><span class="day d-mon">Mon · Lab 1</span></div>
+    <p style="font-size:.9rem;margin:.2rem 0 0">Use the <b>Hero's Journey Planner</b> — one sentence per step is enough today. The 12 steps, split across the week:</p>
+    <div class="journey">
+      <div class="jcol" style="--hue:var(--parts)"><h5>Monday · 1–4</h5><ol>
+        <li><b>Ordinary World</b> — home, normal life</li>
+        <li><b>Call to Adventure</b> — something changes</li>
+        <li><b>Refusal</b> — doubt &amp; fear</li>
+        <li><b>Meeting the Mentor</b> — a guide appears</li></ol></div>
+      <div class="jcol" style="--hue:var(--stage)"><h5>Tuesday · 4–8</h5><ol start="5">
+        <li><b>Crossing the Threshold</b> — no turning back</li>
+        <li><b>Tests, Allies &amp; Enemies</b></li>
+        <li><b>Approach the Inmost Cave</b> — the big one nears</li>
+        <li><b>The Ordeal</b> — the hardest fight begins</li></ol></div>
+      <div class="jcol" style="--hue:var(--files)"><h5>Wednesday · 8–12</h5><ol start="9">
+        <li><b>Reward</b> — what she gains</li>
+        <li><b>The Road Back</b></li>
+        <li><b>Resurrection</b> — the final test, biggest change</li>
+        <li><b>Return with the Elixir</b> — home, changed, sharing the gift</li></ol></div>
+    </div>
+    <span class="sheet-tag">📄 Sheet 4 · Hero's Journey Planner</span>
+  </div>
+
+  <!-- 5 -->
+  <div class="step">
+    <div class="top"><span class="n">5</span><h3>Write the middle — powers into dialogue</h3><span class="day d-tue">Tue · Lab 2</span></div>
+    <ol>
+      <li>Advance through <b>stages 4–8</b>: cross the threshold, meet allies, face the first big tests.</li>
+      <li><b>The assignment:</b> write each girl's real leadership superpower directly into her hero's <b>choices and dialogue</b> — not just the powers, the decisions.</li>
+      <li>Show, don't tell: instead of "she was brave," draw her stepping forward when everyone backs away.</li>
+    </ol>
+    <p class="say">Checkpoint question for each team: "point to one panel where a real superpower made the choice."</p>
+  </div>
+
+  <!-- 6 -->
+  <div class="step">
+    <div class="top"><span class="n">6</span><h3>Climax &amp; resolution — defeat the stereotype</h3><span class="day d-wed">Wed · Lab 3</span></div>
+    <ol>
+      <li><b>The Supreme Ordeal:</b> the heroes face the villain — and win only by <b>combining</b> their different superpowers.</li>
+      <li><b>Defeat the stereotype:</b> the villain's lie gets disproven on the page, by characters proud of who they are.</li>
+      <li><b>Return with the Elixir:</b> the heroes come home changed — show how they use what they learned to lift their community.</li>
+      <li>Script complete = all 12 planner boxes filled with real sentences.</li>
+    </ol>
+  </div>
+
+  <!-- 7 -->
+  <div class="step">
+    <div class="top"><span class="n">7</span><h3>Build it in Canva</h3><span class="day d-thu">Mon→Thu · ongoing</span></div>
+    <ol>
+      <li>Canva Lead: <a href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=10">open Canva → Templates</a> <a class="ts" href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=10">▶ 0:10</a> and search <b>"comic book template"</b> <a class="ts" href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=20">▶ 0:20</a>.</li>
+      <li>Pick a <b>free</b> template whose panel layout matches your pages <a class="ts" href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=28">▶ 0:28</a>, open it <a class="ts" href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=43">▶ 0:43</a>.</li>
+      <li>Fill panels with the team's art + Canva elements <a class="ts" href="https://loom.com/share/775686c1c92d4a84a59b576b380d2522?t=84">▶ 1:24</a> — use the <b>Page Planner sheet</b> to sketch each page on paper FIRST, then rebuild it in Canva (way faster than designing live).</li>
+      <li>Speech bubbles: Elements → search "speech bubble." Keep fonts to <b>two max</b> for the whole comic.</li>
+      <li>Share the design with all teammates + your facilitator (Share → invite by email) so everyone can work on it.</li>
+    </ol>
+    <span class="sheet-tag">📄 Sheet 5 · Page Planner (one per page)</span>
+    <div class="cau"><b>⚠️ Watch out</b><ul>
+      <li><b>Free vs. paid:</b> some templates/elements cost money — check for the crown icon before using.</li>
+      <li><b>Only use approved art</b> — your drawings, Canva's free elements, or licensed assets.</li>
+      <li><b>Consistency:</b> same style, same fonts, same colours across every page.</li>
+    </ul></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="step">
+    <div class="top"><span class="n">8</span><h3>Polish, publish &amp; present</h3><span class="day d-fri">Thu–Fri</span></div>
+    <ol>
+      <li><b>Thursday polish:</b> read the whole comic out loud as a team — fix confusing panels, typos, missing steps. Check all <b>12 journey points</b> are visible in the pages.</li>
+      <li><b>Publish:</b> Canva → Share → Download as <b>PDF</b> (and grab a public view link).</li>
+      <li><b>The pitch deck:</b> add your comic pages to the team presentation slides — hero lore, the stereotype you defeated, and which real superpowers powered the story.</li>
+      <li><b>Friday showcase:</b> one device at your station shows the comic. Every teammate speaks — introduce YOUR hero and the real strength behind her.</li>
+    </ol>
+    <p class="say">Rehearse Thursday evening in the dress-rehearsal rotation — 60 seconds per girl is plenty.</p>
+  </div>
+
+  <div class="foot"><p>Companion pieces: the <b>Worksheet Pack</b> (Sheets 1–5, printable) and the <b>Comic Slides</b> deck. Canva mechanics follow the camp's Loom video (Recipe #1 in the SOP Book). Journey mapping matches the playbook: steps 1–4 Mon · 4–8 Tue · 8–12 Wed.</p></div>
+</div>
+
+<script>
+  var root=document.documentElement, tBtn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || ((window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'); }
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+  tBtn.addEventListener('click',function(){ var nx=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('rr-theme',nx);}catch(e){} });
+</script>

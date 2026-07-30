@@ -1,0 +1,170 @@
+<title>Reef Runner — Mod Challenge Cards</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --card:#ffffff; --ink:#1c2a32; --ink-soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --stage-bg:#e4eff8;
+    --parts:#0f8a7e; --parts-bg:#dcf0ec;
+    --files:#7d5cc4; --files-bg:#eae4f6;
+    --settings:#e56a53; --settings-bg:#fbe6e0;
+    --go:#c9821f; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --paper:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; } }
+  :root[data-theme="dark"]{ --paper:#12201f; --ink:#e8f0ee; --ink-soft:#9fb3b1; }
+  :root[data-theme="light"]{ --paper:#eef3f0; --ink:#1c2a32; --ink-soft:#54666f; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.4; }
+  .wrap{ max-width:900px; margin:0 auto; padding:20px 18px 50px; }
+  .head{ text-align:center; margin-bottom:6px; }
+  h1{ font-family:var(--fd); font-size:1.7rem; margin:0; }
+  .sub{ color:var(--ink-soft); font-size:.9rem; margin:4px 0 2px; }
+  .how{ text-align:center; font-size:.82rem; color:var(--ink-soft); background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:12px auto 16px; max-width:640px; }
+  .how b{ color:var(--ink); }
+  .btnrow{ text-align:center; margin-bottom:14px; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--parts); color:#fff; border:0; border-radius:999px; padding:9px 18px; font-size:.88rem; cursor:pointer; }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .cardx{ background:var(--card); border:1px solid var(--line); border-top:6px solid var(--hue,var(--parts)); border-radius:12px; padding:12px 14px; break-inside:avoid; }
+  .cardx .t{ font-family:var(--fd); font-weight:700; font-size:1.05rem; margin:0 0 2px; }
+  .cardx .lv{ float:right; font-size:.8rem; letter-spacing:1px; }
+  .cardx .click{ font-size:.78rem; color:var(--hue,var(--parts)); font-family:var(--fd); font-weight:700; text-transform:uppercase; letter-spacing:.4px; margin:2px 0 4px; }
+  .cardx .do{ font-size:.86rem; }
+  .cardx .do b{ color:var(--ink); }
+  .cardx .see{ font-size:.78rem; color:var(--ink-soft); margin-top:4px; font-style:normal; }
+
+  .hue-parts{ --hue:var(--parts); }
+  .hue-stage{ --hue:var(--stage); }
+  .hue-settings{ --hue:var(--settings); }
+  .hue-files{ --hue:var(--files); }
+  .hue-go{ --hue:var(--go); }
+
+  .blank .do{ color:var(--ink-soft); }
+  .blank .line{ border-bottom:1.5px dashed var(--line); height:16px; margin-top:6px; }
+
+  @media print{
+    @page{ size:Letter portrait; margin:10mm; }
+    body{ background:#fff; }
+    .btnrow{ display:none; }
+    .cardx{ box-shadow:none; }
+  }
+  @media (max-width:600px){ .grid{ grid-template-columns:1fr; } }
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <h1>🐠 Reef Runner — Mod Challenges</h1>
+    <p class="sub">Dares for your game. Do one, then hit Play and watch!</p>
+  </div>
+  <div class="how">
+    <b>How to play:</b> click the piece it says → change the number or colour in the <b>Settings</b> panel → press <b>▶ Play (F5)</b>. Don't like it? <b>Undo</b> with Ctrl/⌘ + Z and try another.
+  </div>
+  <div class="btnrow"><button class="btn" onclick="window.print()">🖨 Print</button></div>
+
+  <div class="grid">
+
+    <div class="cardx hue-parts">
+      <span class="lv">⭐</span>
+      <p class="t">🌙 Moon Jump</p>
+      <div class="click">Click Player → Jump Force</div>
+      <div class="do">Change it to <b>−900</b>.</div>
+      <div class="see">She launches super high! (Keep it negative.)</div>
+    </div>
+
+    <div class="cardx hue-parts">
+      <span class="lv">⭐</span>
+      <p class="t">🐌 Slow-Mo Splash</p>
+      <div class="click">Click Player → Gravity</div>
+      <div class="do">Change it to <b>400</b>.</div>
+      <div class="see">She floats down slowly, like she's underwater.</div>
+    </div>
+
+    <div class="cardx hue-parts">
+      <span class="lv">⭐</span>
+      <p class="t">⚡ Speedy Fish</p>
+      <div class="click">Click Player → Speed</div>
+      <div class="do">Change it to <b>500</b>.</div>
+      <div class="see">Zoom! She runs twice as fast.</div>
+    </div>
+
+    <div class="cardx hue-settings">
+      <span class="lv">⭐</span>
+      <p class="t">🔥 Lava Floor</p>
+      <div class="click">Click Ground → Visual → Color</div>
+      <div class="do">Pick a <b>bright red or orange</b>.</div>
+      <div class="see">The sea floor turns to lava!</div>
+    </div>
+
+    <div class="cardx hue-settings">
+      <span class="lv">⭐⭐</span>
+      <p class="t">🌈 Rainbow Reefs</p>
+      <div class="click">Click a Coin → Sprite2D → Modulate</div>
+      <div class="do">Give each reef a <b>different colour</b>.</div>
+      <div class="see">A rainbow reef to save!</div>
+    </div>
+
+    <div class="cardx hue-parts">
+      <span class="lv">⭐⭐</span>
+      <p class="t">🌀 Dizzy Reefs</p>
+      <div class="click">Click a Coin → Spin Speed</div>
+      <div class="do">Change it to <b>12</b>.</div>
+      <div class="see">The reefs spin like tops.</div>
+    </div>
+
+    <div class="cardx hue-settings">
+      <span class="lv">⭐⭐</span>
+      <p class="t">👹 Super Enemy</p>
+      <div class="click">Click Enemy1 → Speed & Move Distance</div>
+      <div class="do">Speed <b>300</b>, Move Distance <b>400</b>.</div>
+      <div class="see">It zooms way farther. Can you dodge it?</div>
+    </div>
+
+    <div class="cardx hue-settings">
+      <span class="lv">⭐</span>
+      <p class="t">🐱 Nine Lives</p>
+      <div class="click">Click GameManager → Starting Lives</div>
+      <div class="do">Change it to <b>9</b>.</div>
+      <div class="see">Way more tries before Game Over.</div>
+    </div>
+
+    <div class="cardx hue-stage">
+      <span class="lv">⭐⭐</span>
+      <p class="t">💥 Reef Explosion</p>
+      <div class="click">Right-click Coin1 → Duplicate</div>
+      <div class="do">Make <b>10 copies</b> and scatter them in the Stage.</div>
+      <div class="see">A whole reef to rescue — each one already works!</div>
+    </div>
+
+    <div class="cardx hue-stage">
+      <span class="lv">⭐⭐</span>
+      <p class="t">🏝️ Build Your Level</p>
+      <div class="click">Drag Platform1 / Platform2 in the Stage</div>
+      <div class="do">Move them into a <b>staircase</b> she can climb.</div>
+      <div class="see">You just designed a level!</div>
+    </div>
+
+    <div class="cardx hue-files">
+      <span class="lv">⭐⭐⭐</span>
+      <p class="t">🎨 Reskin the Hero</p>
+      <div class="click">Files panel → replace icon.svg</div>
+      <div class="do">Drop in <b>your own drawing</b> (make one in Piskel!).</div>
+      <div class="see">Every fish, reef & enemy uses YOUR art.</div>
+    </div>
+
+    <div class="cardx blank" style="--hue:#8aa0a6">
+      <span class="lv">⭐⭐⭐</span>
+      <p class="t">✨ Your Own Dare</p>
+      <div class="click">Your idea</div>
+      <div class="do">What do you want to change?</div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var root=document.documentElement;
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+</script>

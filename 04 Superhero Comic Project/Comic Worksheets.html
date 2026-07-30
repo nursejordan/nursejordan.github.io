@@ -1,0 +1,176 @@
+<title>Superhero Comic — Worksheet Pack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#eef3f0; --ink:#1c2a32; --soft:#54666f; --line:#cdd8d3;
+    --stage:#2f7fbf; --parts:#0f8a7e; --files:#7d5cc4; --settings:#e56a53; --go:#c9821f;
+    --parts-bg:#dcf0ec; --stage-bg:#e4eff8; --files-bg:#eae4f6; --settings-bg:#fbe6e0; --go-bg:#faeecd;
+    --fd:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --fb:Verdana,Geneva,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --paper:#12201f; --ink:#e8f0ee; --soft:#9fb3b1; } }
+  :root[data-theme="dark"]{ --paper:#12201f; --ink:#e8f0ee; --soft:#9fb3b1; }
+  :root[data-theme="light"]{ --paper:#eef3f0; --ink:#1c2a32; --soft:#54666f; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb); line-height:1.45; }
+  .bar{ max-width:840px; margin:0 auto; padding:16px 18px 4px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .bar p{ margin:0; font-size:.85rem; color:var(--soft); max-width:56ch; }
+  .btn{ font-family:var(--fd); font-weight:700; background:var(--settings); color:#fff; border:0; border-radius:999px; padding:9px 18px; font-size:.9rem; cursor:pointer; }
+
+  .sheet{
+    background:#fff; color:#15202a; max-width:840px; margin:14px auto; padding:26px 32px;
+    border-radius:12px; box-shadow:0 10px 36px rgba(20,40,45,.13);
+  }
+  .sh-head{ display:flex; align-items:baseline; gap:10px; border-bottom:3px solid var(--hue,#e56a53); padding-bottom:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .sh-head .no{ font-family:var(--fd); font-weight:700; color:#fff; background:var(--hue,#e56a53); border-radius:9px; padding:3px 11px; font-size:.85rem; }
+  .sh-head h2{ font-family:var(--fd); font-size:1.35rem; margin:0; }
+  .sh-head .who{ margin-left:auto; font-size:.72rem; color:#66787f; font-family:var(--fd); font-weight:700; }
+  .hint{ font-size:.78rem; color:#5d6f76; margin:0 0 12px; }
+
+  .fld{ margin:10px 0; }
+  .fld label{ display:block; font-family:var(--fd); font-weight:700; font-size:.85rem; margin-bottom:3px; }
+  .fld label small{ font-weight:400; color:#66787f; font-family:var(--fb); }
+  .wl{ border-bottom:2px solid #9fb0b6; height:26px; }
+  .wl.short{ max-width:340px; }
+  .box{ border:2px solid #9fb0b6; border-radius:10px; min-height:64px; }
+  .box.tall{ min-height:120px; }
+  .box.draw{ min-height:230px; background:
+    repeating-linear-gradient(0deg, transparent, transparent 19px, #eef2f3 19px, #eef2f3 20px); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .cols3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  @media (max-width:620px){ .cols2,.cols3{ grid-template-columns:1fr; } }
+
+  /* roster table */
+  .rtab{ width:100%; border-collapse:collapse; }
+  .rtab th{ font-family:var(--fd); font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; color:#66787f; text-align:left; padding:6px 8px; border-bottom:2px solid #9fb0b6; }
+  .rtab td{ border-bottom:1.5px solid #c9d4d8; height:38px; padding:4px 8px; font-family:var(--fd); font-weight:700; font-size:.8rem; color:var(--hue,#e56a53); }
+  .rtab td.blank{ color:inherit; }
+
+  /* journey grid */
+  .jgrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .jbox{ border:2px solid var(--jc,#0f8a7e); border-radius:10px; padding:8px 11px; min-height:74px; }
+  .jbox h4{ font-family:var(--fd); font-size:.78rem; margin:0 0 2px; color:var(--jc,#0f8a7e); }
+  .jbox .sub{ font-size:.66rem; color:#66787f; margin:0 0 4px; }
+  .jband{ font-family:var(--fd); font-weight:700; font-size:.72rem; text-transform:uppercase; letter-spacing:.6px; margin:12px 0 6px; color:var(--jc); }
+
+  /* page planner panels */
+  .pgrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .panelbox{ border:2.5px solid #15202a; border-radius:6px; min-height:150px; position:relative; }
+  .panelbox span{ position:absolute; top:4px; left:7px; font-family:var(--fd); font-weight:700; font-size:.7rem; color:#9fb0b6; }
+
+  @media print{
+    @page{ size:Letter portrait; margin:10mm; }
+    body{ background:#fff; }
+    .bar{ display:none; }
+    .sheet{ box-shadow:none; border-radius:0; margin:0; padding:2mm 0 0; page-break-after:always; }
+    .sheet:last-child{ page-break-after:auto; }
+  }
+</style>
+
+<div class="bar">
+  <p>🦸🏾‍♀️ <b>Superhero Comic — Worksheet Pack.</b> Five sheets: print Sheet 2 once per girl and Sheet 5 once per comic page; the rest one per team.</p>
+  <button class="btn" onclick="window.print()">🖨 Print all 5</button>
+</div>
+
+<!-- SHEET 1: TEAM ROSTER -->
+<div class="sheet" style="--hue:var(--settings)">
+  <div class="sh-head"><span class="no">SHEET 1</span><h2>Team Roster</h2><span class="who">one per team</span></div>
+  <p class="hint">Everyone draws AND writes — a role means you <b>lead</b> that part.</p>
+  <div class="fld"><label>Team name <small>(make it heroic!)</small></label><div class="wl"></div></div>
+  <table class="rtab">
+    <tr><th style="width:34%">Role</th><th>Name</th><th style="width:38%">Her real-life superpower</th></tr>
+    <tr><td>✍️ Story Lead <small style="color:#66787f">(script &amp; dialogue)</small></td><td class="blank"></td><td class="blank"></td></tr>
+    <tr><td>🎨 Art Director <small style="color:#66787f">(style &amp; characters)</small></td><td class="blank"></td><td class="blank"></td></tr>
+    <tr><td>🖥️ Canva Lead <small style="color:#66787f">(layout &amp; assembly)</small></td><td class="blank"></td><td class="blank"></td></tr>
+    <tr><td>📚 Lore Keeper <small style="color:#66787f">(world rules &amp; continuity)</small></td><td class="blank"></td><td class="blank"></td></tr>
+  </table>
+  <div class="fld" style="margin-top:14px"><label>Our comic's title <small>(you can change it later)</small></label><div class="wl"></div></div>
+  <div class="fld"><label>One sentence: what is our comic about?</label><div class="box"></div></div>
+</div>
+
+<!-- SHEET 2: CHARACTER SHEET -->
+<div class="sheet" style="--hue:var(--parts)">
+  <div class="sh-head"><span class="no" style="background:var(--parts)">SHEET 2</span><h2>Superhero Character Sheet</h2><span class="who">one per girl</span></div>
+  <p class="hint">The rule: your hero's comic power is your <b>real strength in disguise</b>.</p>
+  <div class="cols2">
+    <div>
+      <div class="fld"><label>Your name</label><div class="wl"></div></div>
+      <div class="fld"><label>Hero name</label><div class="wl"></div></div>
+      <div class="fld"><label>My real-life superpower <small>(from the workshop)</small></label><div class="wl"></div></div>
+      <div class="fld"><label>…in disguise, it becomes this comic power:</label><div class="box"></div></div>
+      <div class="fld"><label>Her weakness <small>(every hero needs one!)</small></label><div class="wl"></div></div>
+      <div class="fld"><label>Catchphrase</label><div class="wl"></div></div>
+    </div>
+    <div>
+      <div class="fld"><label>Draw her! <small>(costume, colours, symbol)</small></label><div class="box draw" style="min-height:330px"></div></div>
+    </div>
+  </div>
+  <div class="fld"><label>Backstory in 3 sentences <small>(where is she from? what does she want?)</small></label><div class="box tall"></div></div>
+</div>
+
+<!-- SHEET 3: WORLD-BUILDING -->
+<div class="sheet" style="--hue:var(--stage)">
+  <div class="sh-head"><span class="no" style="background:var(--stage)">SHEET 3</span><h2>World-Building</h2><span class="who">one per team</span></div>
+  <p class="hint">Real world-building = the reader believes the place is real. Rules make it real.</p>
+  <div class="cols2">
+    <div class="fld"><label>Our world's name</label><div class="wl"></div></div>
+    <div class="fld"><label>The setting <small>(city? reef? space school?)</small></label><div class="wl"></div></div>
+  </div>
+  <div class="fld"><label>3 rules of our world <small>(what's possible? what's forbidden? what does everyone know?)</small></label><div class="box tall"></div></div>
+  <div class="cols2">
+    <div class="fld"><label>The villain <small>(name + what they can do)</small></label><div class="box"></div></div>
+    <div class="fld"><label>The real-world stereotype the villain stands for <small>(the lie our comic will smash)</small></label><div class="box"></div></div>
+  </div>
+  <div class="fld"><label>Allies &amp; helpers <small>(the mentor, friends, sidekicks)</small></label><div class="box"></div></div>
+  <div class="fld"><label>Draw the world map or key place</label><div class="box draw"></div></div>
+</div>
+
+<!-- SHEET 4: HERO'S JOURNEY PLANNER -->
+<div class="sheet" style="--hue:var(--files)">
+  <div class="sh-head"><span class="no" style="background:var(--files)">SHEET 4</span><h2>Hero's Journey Planner — the 12 steps</h2><span class="who">one per team</span></div>
+  <p class="hint">One or two sentences per box is enough. Fill the green boxes Monday, blue Tuesday, purple Wednesday.</p>
+  <div class="jband" style="--jc:var(--parts)">Monday · Steps 1–4 · the setup</div>
+  <div class="jgrid">
+    <div class="jbox" style="--jc:var(--parts)"><h4>1 · Ordinary World</h4><p class="sub">home, normal life</p></div>
+    <div class="jbox" style="--jc:var(--parts)"><h4>2 · Call to Adventure</h4><p class="sub">something changes</p></div>
+    <div class="jbox" style="--jc:var(--parts)"><h4>3 · Refusal of the Call</h4><p class="sub">doubt &amp; fear</p></div>
+    <div class="jbox" style="--jc:var(--parts)"><h4>4 · Meeting the Mentor</h4><p class="sub">a guide appears</p></div>
+  </div>
+  <div class="jband" style="--jc:var(--stage)">Tuesday · Steps 5–8 · the adventure</div>
+  <div class="jgrid">
+    <div class="jbox" style="--jc:var(--stage)"><h4>5 · Crossing the Threshold</h4><p class="sub">no turning back</p></div>
+    <div class="jbox" style="--jc:var(--stage)"><h4>6 · Tests, Allies &amp; Enemies</h4><p class="sub">first battles &amp; friends</p></div>
+    <div class="jbox" style="--jc:var(--stage)"><h4>7 · Approach the Inmost Cave</h4><p class="sub">the big challenge nears</p></div>
+    <div class="jbox" style="--jc:var(--stage)"><h4>8 · The Ordeal</h4><p class="sub">the hardest fight</p></div>
+  </div>
+  <div class="jband" style="--jc:var(--files)">Wednesday · Steps 9–12 · the victory</div>
+  <div class="jgrid">
+    <div class="jbox" style="--jc:var(--files)"><h4>9 · Reward</h4><p class="sub">what she gains</p></div>
+    <div class="jbox" style="--jc:var(--files)"><h4>10 · The Road Back</h4><p class="sub">heading home</p></div>
+    <div class="jbox" style="--jc:var(--files)"><h4>11 · Resurrection</h4><p class="sub">final test · biggest change · the stereotype falls</p></div>
+    <div class="jbox" style="--jc:var(--files)"><h4>12 · Return with the Elixir</h4><p class="sub">home, changed, sharing the gift</p></div>
+  </div>
+</div>
+
+<!-- SHEET 5: PAGE PLANNER -->
+<div class="sheet" style="--hue:var(--go)">
+  <div class="sh-head"><span class="no" style="background:var(--go)">SHEET 5</span><h2>Comic Page Planner</h2><span class="who">one per comic page</span></div>
+  <p class="hint">Sketch each page on paper FIRST — stick figures are perfect — then rebuild it in Canva. Note who speaks in each panel.</p>
+  <div class="cols3" style="margin-bottom:10px">
+    <div class="fld"><label>Page number</label><div class="wl short"></div></div>
+    <div class="fld"><label>Journey step(s) shown <small>(1–12)</small></label><div class="wl short"></div></div>
+    <div class="fld"><label>Artist for this page</label><div class="wl short"></div></div>
+  </div>
+  <div class="pgrid">
+    <div class="panelbox"><span>PANEL 1</span></div>
+    <div class="panelbox"><span>PANEL 2</span></div>
+    <div class="panelbox"><span>PANEL 3</span></div>
+    <div class="panelbox"><span>PANEL 4</span></div>
+  </div>
+  <div class="fld" style="margin-top:12px"><label>Dialogue &amp; captions for this page</label><div class="box tall"></div></div>
+</div>
+
+<script>
+  var root=document.documentElement;
+  try{ var st=localStorage.getItem('rr-theme'); if(st) root.setAttribute('data-theme',st); }catch(e){}
+</script>
